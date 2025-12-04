@@ -178,7 +178,19 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <!-- Loading Screen (Shows while React is loading) -->
+    <div id="root">
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
+            <div style="font-size: 60px; animation: bounce 1s infinite;">🎀</div>
+            <div style="color: #EC4899; font-family: sans-serif; margin-top: 16px; font-weight: bold; font-size: 16px; letter-spacing: 2px;">LOADING...</div>
+            <style>
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-10px); }
+                }
+            </style>
+        </div>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
@@ -371,10 +383,9 @@
         // --- COMPONENTS ---
 
         const WeatherWidget = ({ location, date }) => {
-            
-            // Simulated Weather based on Season and Location (since it's future dates)
+            // Simulated Weather based on Season and Location
             const getSimulatedWeather = (loc, dateStr) => {
-                // Parse month from date string (e.g., "2025/11/01")
+                // Parse month from date string
                 const month = parseInt(dateStr.split('/')[1], 10);
                 const isWinter = month === 12 || month === 1 || month === 2;
                 const isSouth = loc.includes('屏東') || loc.includes('高雄') || loc.includes('成大');
@@ -383,17 +394,14 @@
                 let temp, label, type;
 
                 if (isSouth) {
-                    // South is generally warmer and sunnier
                     temp = isWinter ? '22-26°C' : '24-29°C';
                     type = 'Sun';
                     label = '晴時多雲';
                 } else if (isNorth) {
-                    // North is colder and rainier in winter
                     temp = isWinter ? '14-18°C' : '18-22°C';
                     type = isWinter ? 'CloudRain' : 'Cloud';
                     label = isWinter ? '陰有雨' : '多雲';
                 } else {
-                    // Central/Others
                     temp = isWinter ? '18-23°C' : '21-26°C';
                     type = 'CloudSun';
                     label = '多雲時晴';
@@ -404,12 +412,9 @@
 
             const weather = getSimulatedWeather(location, date);
 
-            // iOS Weather Deep Link or fallback
-            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-            // If strictly no external click, we just show the div. But user asked for "auto display", implying the widget IS the display.
-            // If they CLICK it, maybe open system app.
+            // iOS Weather Deep Link
             const handleClick = () => {
-                if (isIOS) {
+                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                     window.location.href = 'weather://';
                 } else {
                     window.open(`https://www.google.com/search?q=${location}+天氣`, '_blank');
@@ -904,7 +909,7 @@
                                     <div className="absolute inset-0 bg-white rounded-3xl transform scale-105 border-2 border-pink-100/50"></div>
                                     <img src="./image_82155e.jpg" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400/FBCFE8/ffffff?text=Put+Image+Here"; }} alt="Powerme Girls Logo" className="w-48 h-auto relative rounded-2xl shadow-sm bg-white p-1" />
                                 </div>
-                                <h2 className="text-xl font-bold text-gray-400 tracking-widest uppercase mt-1 font-mono">Girl's Pocket</h2>
+                                <h2 className="text-xl font-bold text-gray-400 tracking-widest uppercase mt-1 font-mono">Powerme Girl's Pocket</h2>
                                 <div className="absolute -right-2 top-8 transform rotate-12"><Icon name="Sparkles" size={20} className="text-yellow-400" /></div>
                             </div>
                             <p className="text-gray-500 mb-4 text-center text-xs font-bold bg-pink-50 inline-block px-3 py-1 rounded-full mx-auto block w-max">✨ 請點選妳的名字 ✨</p>
