@@ -5,24 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Powerme Girl's Pocket</title>
     
-    <!-- iOS PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Powerme Pocket">
-    <link rel="apple-touch-icon" href="./image_82155e.jpg">
     
-    <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
-    <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -34,40 +28,27 @@
             padding-bottom: env(safe-area-inset-bottom);
         }
         
+        /* Font for Ticket Data */
+        .font-ticket {
+            font-family: 'Space Mono', monospace;
+        }
+
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FBCFE8; 
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #FBCFE8; border-radius: 10px; }
 
         /* Washi Tape Header */
         .washi-header {
             background-color: rgba(255, 255, 255, 0.95);
-            background-image: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(244, 114, 182, 0.05) 10px,
-                rgba(244, 114, 182, 0.05) 20px
-            );
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(244, 114, 182, 0.05) 10px, rgba(244, 114, 182, 0.05) 20px);
             box-shadow: 0 2px 10px rgba(244, 114, 182, 0.1);
             border-bottom: 1px solid #FBCFE8;
         }
 
         /* Toggle Switch */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #EC4899;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #EC4899;
-        }
+        .toggle-checkbox:checked { right: 0; border-color: #EC4899; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #EC4899; }
 
         /* Cute Input Styles */
         .cute-input {
@@ -78,11 +59,9 @@
             transition: all 0.2s;
             background: #FFF;
             font-size: 14px;
+            width: 100%;
         }
-        .cute-input:focus {
-            border-color: #EC4899;
-            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
-        }
+        .cute-input:focus { border-color: #EC4899; box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15); }
 
         /* Dashed Line */
         .dashed-line {
@@ -93,21 +72,104 @@
             height: 2px;
         }
 
-        /* Kawaii HSR Ticket Style */
-        .kawaii-ticket {
-            background: radial-gradient(circle at 0 50%, transparent 10px, #FFF0F5 11px) 0 50% / 51% 100% no-repeat,
-                        radial-gradient(circle at 100% 50%, transparent 10px, #FFF0F5 11px) 100% 50% / 51% 100% no-repeat;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            border: 2px dashed #FBCFE8;
-            border-radius: 12px;
-            padding: 16px 24px;
-            position: relative;
-            background-color: transparent;
-        }
-        .kawaii-ticket-inner {
+        /* --- NEW JAPANESE TICKET STYLE --- */
+        .jp-ticket {
             background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px rgba(236, 72, 153, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #FEE2E2;
+        }
+        
+        /* The side notches */
+        .jp-ticket::before, .jp-ticket::after {
+            content: "";
+            position: absolute;
+            top: 52%; /* Position near the middle */
+            width: 24px;
+            height: 24px;
+            background-color: #FAFAFA; /* Must match modal background */
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* Inner shadow for depth */
+        }
+        .jp-ticket::before { left: -12px; }
+        .jp-ticket::after { right: -12px; }
+
+        /* Ticket Header Strip */
+        .jp-ticket-header {
+            background: #F472B6; /* Pink-400 */
+            background-image: radial-gradient(#FBCFE8 15%, transparent 16%), radial-gradient(#FBCFE8 15%, transparent 16%);
+            background-size: 10px 10px;
+            background-position: 0 0, 5px 5px;
+            color: white;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed rgba(255,255,255,0.5);
+        }
+
+        /* Ticket Body */
+        .jp-ticket-body {
+            padding: 16px 20px;
+        }
+
+        /* Ticket Input Fields (Underlined style) */
+        .ticket-input {
+            width: 100%;
+            text-align: center;
+            background: transparent;
+            border-bottom: 2px solid #FEE2E2;
+            border-radius: 0;
+            padding: 4px 0;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: #374151;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .ticket-input:focus { border-bottom-color: #EC4899; }
+
+        /* Stamp Effect for Payment */
+        .stamp-btn {
+            border: 2px solid #E5E7EB;
+            color: #9CA3AF;
             border-radius: 8px;
-            padding: 12px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.2s;
+            position: relative;
+            background: #F9FAFB;
+        }
+        .stamp-btn.active {
+            border-color: #EC4899;
+            color: #EC4899;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.1);
+            transform: rotate(-3deg) scale(1.05); /* Slight tilt like a stamp */
+        }
+        .stamp-btn.active::after {
+            content: "済"; /* Japanese "Done" or checkmark feel */
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 18px;
+            height: 18px;
+            background: #EC4899;
+            color: white;
+            font-size: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* Hotel Pass Style */
@@ -146,23 +208,12 @@
         }
         .animate-float { animation: float 4s ease-in-out infinite; }
 
-        /* Ribbon */
-        .ribbon-container { position: absolute; top: 0; right: 0; width: 80px; height: 80px; overflow: hidden; z-index: 10; }
-        .ribbon {
-            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
-            color: white; font-size: 10px; font-weight: bold; text-align: center; line-height: 24px;
-            transform: rotate(45deg); width: 120px; position: absolute; top: 15px; right: -35px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
         /* Main Logo Sticker Effect */
         .logo-sticker {
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
             transition: transform 0.3s ease;
         }
-        .logo-sticker:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
+        .logo-sticker:hover { transform: scale(1.05) rotate(2deg); }
         
         /* Sticker Effect */
         .sticker-btn {
@@ -178,7 +229,6 @@
     </style>
 </head>
 <body>
-    <!-- Loading Screen (Shows while React is loading) -->
     <div id="root">
         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
             <div style="font-size: 60px; animation: bounce 1s infinite;">🏐</div>
@@ -192,15 +242,20 @@
         </div>
     </div>
 
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            if(message.includes("ResizeObserver")) return;
+        };
+    </script>
+
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // --- ICON DEFINITIONS ---
+        // --- ICON COMPONENTS ---
         const ICONS = {
             X: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
             Train: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/></svg>,
             ArrowRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            Users: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
             Edit2: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>,
             MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
             Sun: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
@@ -214,12 +269,9 @@
             Heart: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
             Star: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
             Sparkles: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 9h4"/><path d="M3 5h4"/></svg>,
-            ChevronDown: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m6 9 6 6 6-6"/></svg>,
-            Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
-            Filter: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
             Check: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="20 6 9 17 4 12"/></svg>,
-            Map: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="21"/><line x1="15" x2="15" y1="6" y2="24"/></svg>,
-            Navigation: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Navigation: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>,
+            QrCode: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
         };
 
         const Icon = ({ name, size = 24, className = "" }) => {
@@ -230,29 +282,6 @@
 
         const ALL_MEMBERS = ["詠嫺", "凌襄", "昕蓉", "叮叮", "智智", "汶霖", "藍心", "宥心", "芝芝", "郁倪", "時雨", "葳柔"];
         const STATIONS = ["南港", "台北", "板橋", "桃園", "新竹", "苗栗", "台中", "彰化", "雲林", "嘉義", "台南", "左營"];
-
-        // Raw HSR Data String
-        const FULL_HSR_DATA_STR = `803:南港-06:15 台北-06:26 板橋-06:34 桃園-06:49 新竹-07:02 苗栗-07:13 台中-07:32 彰化-07:45 雲林-07:56 嘉義-08:10 台南-08:28 左營-08:40|203:南港-06:30 台北-06:38 板橋-06:47 桃園-07:07 新竹-07:20 苗栗-07:40 台中-07:58 彰化-08:11 雲林-08:22 嘉義-08:40 台南-09:05 左營-09:17|603:南港-06:40 台北-06:51 板橋-07:00 桃園-07:15 新竹-07:27 苗栗-07:39 台中-07:53 彰化-08:06 雲林-08:19 嘉義-08:38 台南-08:50 左營-09:02|805:南港-07:00 台北-07:11 板橋-07:19 桃園-07:34 新竹-07:47 苗栗-07:58 台中-08:17 彰化-08:30 雲林-08:41 嘉義-08:55 台南-09:13 左營-09:25|1607:南港-07:10 台北-07:21 板橋-07:29 桃園-07:43 新竹-07:56 苗栗-08:10 台中-08:25 彰化-08:40 雲林-08:52 嘉義-09:07 台南-09:25 左營-09:37|109:南港-07:20 台北-07:31 板橋-07:39 桃園-07:55 新竹-08:08 苗栗-08:20 台中-08:35 彰化-08:48 雲林-09:00 嘉義-09:20 台南-09:45 左營-09:57|609:南港-07:35 台北-07:46 板橋-07:55 桃園-08:10 新竹-08:22 苗栗-08:35 台中-08:48 彰化-09:01 雲林-09:14 嘉義-09:33 台南-09:45 左營-09:57|205:南港-07:40 台北-07:51 板橋-07:59 桃園-08:15 新竹-08:28 苗栗-08:40 台中-08:55 彰化-09:08 雲林-09:20 嘉義-09:40 台南-10:05 左營-10:17|809:南港-08:00 台北-08:11 板橋-08:19 桃園-08:34 新竹-08:47 苗栗-08:58 台中-09:17 彰化-09:30 雲林-09:41 嘉義-09:55 台南-10:13 左營-10:25|613:南港-08:10 台北-08:21 板橋-08:29 桃園-08:43 新竹-08:56 苗栗-09:09 台中-09:25 彰化-09:38 雲林-09:50 嘉義-10:07 台南-10:20 左營-10:32|207:南港-08:20 台北-08:31 板橋-08:39 桃園-08:55 新竹-09:08 苗栗-09:20 台中-09:35 彰化-09:48 雲林-10:00 嘉義-10:20 台南-10:45 左營-10:57|615:南港-08:35 台北-08:46 板橋-08:55 桃園-09:10 新竹-09:22 苗栗-09:35 台中-09:48 彰化-10:01 雲林-10:14 嘉義-10:33 台南-10:45 左營-10:57|1209:南港-08:40 台北-08:51 板橋-08:59 桃園-09:15 新竹-09:28 苗栗-09:40 台中-09:55 彰化-10:08 雲林-10:20 嘉義-10:40 台南-11:05 左營-11:17|813:南港-09:00 台北-09:11 板橋-09:19 桃園-09:34 新竹-09:47 苗栗-09:58 台中-10:17 彰化-10:30 雲林-10:41 嘉義-10:55 台南-11:13 左營-11:25|619:南港-09:10 台北-09:21 板橋-09:29 桃園-09:43 新竹-09:56 苗栗-10:09 台中-10:25 彰化-10:38 雲林-10:50 嘉義-11:07 台南-11:20 左營-11:32|117:南港-09:20 台北-09:31 板橋-09:39 桃園-09:55 新竹-10:08 苗栗-10:20 台中-10:35 彰化-10:48 雲林-11:00 嘉義-11:20 台南-11:45 左營-11:57|621:南港-09:35 台北-09:46 板橋-09:55 桃園-10:10 新竹-10:22 苗栗-10:35 台中-10:48 彰化-11:01 雲林-11:14 嘉義-11:33 台南-11:45 左營-11:57|1213:南港-09:40 台北-09:51 板橋-09:59 桃園-10:15 新竹-10:28 苗栗-10:40 台中-10:55 彰化-11:08 雲林-11:20 嘉義-11:40 台南-12:05 左營-12:17|817:南港-10:00 台北-10:11 板橋-10:19 桃園-10:34 新竹-10:47 苗栗-10:58 台中-11:17 彰化-11:30 雲林-11:41 嘉義-11:55 台南-12:13 左營-12:25|625:南港-10:10 台北-10:21 板橋-10:29 桃園-10:43 新竹-10:56 苗栗-11:09 台中-11:25 彰化-11:38 雲林-11:50 嘉義-12:07 台南-12:20 左營-12:32|121:南港-10:20 台北-10:31 板橋-10:39 桃園-10:55 新竹-11:08 苗栗-11:20 台中-11:35 彰化-11:48 雲林-12:00 嘉義-12:20 台南-12:45 左營-12:57|627:南港-10:35 台北-10:46 板橋-10:55 桃園-11:10 新竹-11:22 苗栗-11:35 台中-11:48 彰化-12:01 雲林-12:14 嘉義-12:33 台南-12:45 左營-12:57|1217:南港-10:40 台北-10:51 板橋-10:59 桃園-11:15 新竹-11:28 苗栗-11:40 台中-11:55 彰化-12:08 雲林-12:20 嘉義-12:40 台南-13:05 左營-13:17|821:南港-11:00 台北-11:11 板橋-11:19 桃園-11:34 新竹-11:47 苗栗-11:58 台中-12:17 彰化-12:30 雲林-12:41 嘉義-12:55 台南-13:13 左營-13:25|125:南港-11:20 台北-11:31 板橋-11:39 桃園-11:55 新竹-12:08 苗栗-12:20 台中-12:35 彰化-12:48 雲林-13:00 嘉義-13:20 台南-13:45 左營-13:57|633:南港-11:35 台北-11:46 板橋-11:55 桃園-12:10 新竹-12:22 苗栗-12:35 台中-12:48 彰化-13:01 雲林-13:14 嘉義-13:33 台南-13:45 左營-13:57|825:南港-12:00 台北-12:11 板橋-12:19 桃園-12:34 新竹-12:47 苗栗-12:58 台中-13:17 彰化-13:30 雲林-13:41 嘉義-13:55 台南-14:13 左營-14:25|637:南港-12:10 台北-12:21 板橋-12:29 桃園-12:43 新竹-12:56 苗栗-13:09 台中-13:25 彰化-13:38 雲林-13:50 嘉義-14:07 台南-14:20 左營-14:32|129:南港-12:20 台北-12:31 板橋-12:39 桃園-12:55 新竹-13:08 苗栗-13:20 台中-13:35 彰化-13:48 雲林-14:00 嘉義-14:20 台南-14:45 左營-14:57|639:南港-12:35 台北-12:46 板橋-12:55 桃園-13:10 新竹-13:22 苗栗-13:35 台中-13:48 彰化-14:01 雲林-14:14 嘉義-14:33 台南-14:45 左營-14:57|1225:南港-12:40 台北-12:51 板橋-12:59 桃園-13:15 新竹-13:28 苗栗-13:40 台中-13:55 彰化-14:08 雲林-14:20 嘉義-14:40 台南-15:05 左營-15:17|829:南港-13:00 台北-13:11 板橋-13:19 桃園-13:34 新竹-13:47 苗栗-13:58 台中-14:17 彰化-14:30 雲林-14:41 嘉義-14:55 台南-15:13 左營-15:25|643:南港-13:10 台北-13:21 板橋-13:29 桃園-13:43 新竹-13:56 苗栗-14:09 台中-14:25 彰化-14:38 雲林-14:50 嘉義-15:07 台南-15:20 左營-15:32|133:南港-13:20 台北-13:31 板橋-13:39 桃園-13:55 新竹-14:08 苗栗-14:20 台中-14:35 彰化-14:48 雲林-15:00 嘉義-15:20 台南-15:45 左營-15:57|645:南港-13:35 台北-13:46 板橋-13:55 桃園-14:10 新竹-14:22 苗栗-14:35 台中-14:48 彰化-15:01 雲林-15:14 嘉義-15:33 台南-15:45 左營-15:57|1229:南港-13:40 台北-13:51 板橋-13:59 桃園-14:15 新竹-14:28 苗栗-14:40 台中-14:55 彰化-15:08 雲林-15:20 嘉義-15:40 台南-16:05 左營-16:17|833:南港-14:00 台北-14:11 板橋-14:19 桃園-14:34 新竹-14:47 苗栗-14:58 台中-15:17 彰化-15:30 雲林-15:41 嘉義-15:55 台南-16:13 左營-16:25|649:南港-14:10 台北-14:21 板橋-14:29 桃園-14:43 新竹-14:56 苗栗-15:09 台中-15:25 彰化-15:38 雲林-15:50 嘉義-16:07 台南-16:20 左營-16:32|137:南港-14:20 台北-14:31 板橋-14:39 桃園-14:55 新竹-15:08 苗栗-15:20 台中-15:35 彰化-15:48 雲林-16:00 嘉義-16:20 台南-16:45 左營-16:57|651:南港-14:35 台北-14:46 板橋-14:55 桃園-15:10 新竹-15:22 苗栗-15:35 台中-15:48 彰化-16:01 雲林-16:14 嘉義-16:33 台南-16:45 左營-16:57|1233:南港-14:40 台北-14:51 板橋-14:59 桃園-15:15 新竹-15:28 苗栗-15:40 台中-15:55 彰化-16:08 雲林-16:20 嘉義-16:40 台南-17:05 左營-17:17|837:南港-15:00 台北-15:11 板橋-15:19 桃園-15:34 新竹-15:47 苗栗-15:58 台中-16:17 彰化-16:30 雲林-16:41 嘉義-16:55 台南-17:13 左營-17:25|655:南港-15:10 台北-15:21 板橋-15:29 桃園-15:43 新竹-15:56 苗栗-16:09 台中-16:25 彰化-16:38 雲林-16:50 嘉義-17:07 台南-17:20 左營-17:32|141:南港-15:20 台北-15:31 板橋-15:39 桃園-15:55 新竹-16:08 苗栗-16:20 台中-16:35 彰化-16:48 雲林-17:00 嘉義-17:20 台南-17:45 左營-17:57|657:南港-15:35 台北-15:46 板橋-15:55 桃園-16:10 新竹-16:22 苗栗-16:35 台中-16:48 彰化-17:01 雲林-17:14 嘉義-17:33 台南-17:45 左營-17:57|1237:南港-15:40 台北-15:51 板橋-15:59 桃園-16:15 新竹-16:28 苗栗-16:40 台中-16:55 彰化-17:08 雲林-17:20 嘉義-17:40 台南-18:05 左營-18:17|841:南港-16:00 台北-16:11 板橋-16:19 桃園-16:34 新竹-16:47 苗栗-16:58 台中-17:17 彰化-17:30 雲林-17:41 嘉義-17:55 台南-18:13 左營-18:25|661:南港-16:10 台北-16:21 板橋-16:29 桃園-16:43 新竹-16:56 苗栗-17:09 台中-17:25 彰化-17:38 雲林-17:50 嘉義-18:07 台南-18:20 左營-18:32|145:南港-16:20 台北-16:31 板橋-16:39 桃園-16:55 新竹-17:08 苗栗-17:20 台中-17:35 彰化-17:48 雲林-18:00 嘉義-18:20 台南-18:45 左營-18:57|663:南港-16:35 台北-16:46 板橋-16:55 桃園-17:10 新竹-17:22 苗栗-17:35 台中-17:48 彰化-18:01 雲林-18:14 嘉義-18:33 台南-18:45 左營-18:57|1241:南港-16:40 台北-16:51 板橋-16:59 桃園-17:15 新竹-17:28 苗栗-17:40 台中-17:55 彰化-18:08 雲林-18:20 嘉義-18:40 台南-19:05 左營-19:17|845:南港-17:00 台北-17:11 板橋-17:19 桃園-17:34 新竹-17:47 苗栗-17:58 台中-18:17 彰化-18:30 雲林-18:41 嘉義-18:55 台南-19:13 左營-19:25|667:南港-17:10 台北-17:21 板橋-17:29 桃園-17:43 新竹-17:56 苗栗-18:09 台中-18:25 彰化-18:38 雲林-18:50 嘉義-19:07 台南-19:20 左營-19:32|149:南港-17:20 台北-17:31 板橋-17:39 桃園-17:55 新竹-18:08 苗栗-18:20 台中-18:35 彰化-18:48 雲林-19:00 嘉義-19:20 台南-19:45 左營-19:57|669:南港-17:35 台北-17:46 板橋-17:55 桃園-18:10 新竹-18:22 苗栗-18:35 台中-18:48 彰化-19:01 雲林-19:14 嘉義-19:33 台南-19:45 左營-19:57|1245:南港-17:40 台北-17:51 板橋-17:59 桃園-18:15 新竹-18:28 苗栗-18:40 台中-18:55 彰化-19:08 雲林-19:20 嘉義-19:40 台南-20:05 左營-20:17|849:南港-18:00 台北-18:11 板橋-18:19 桃園-18:34 新竹-18:47 苗栗-18:58 台中-19:17 彰化-19:30 雲林-19:41 嘉義-19:55 台南-20:13 左營-20:25|673:南港-18:10 台北-18:21 板橋-18:29 桃園-18:43 新竹-18:56 苗栗-19:09 台中-19:25 彰化-19:38 雲林-19:50 嘉義-20:07 台南-20:20 左營-20:32|153:南港-18:20 台北-18:31 板橋-18:39 桃園-18:55 新竹-19:08 苗栗-19:20 台中-19:35 彰化-19:48 雲林-20:00 嘉義-20:20 台南-20:45 左營-20:57|675:南港-18:35 台北-18:46 板橋-18:55 桃園-19:10 新竹-19:22 苗栗-19:35 台中-19:48 彰化-20:01 雲林-20:14 嘉義-20:33 台南-20:45 左營-20:57|249:南港-18:40 台北-18:51 板橋-18:59 桃園-19:15 新竹-19:28 苗栗-19:40 台中-19:55 彰化-20:08 雲林-20:20 嘉義-20:40 台南-21:05 左營-21:17|853:南港-19:00 台北-19:11 板橋-19:19 桃園-19:34 新竹-19:47 苗栗-19:58 台中-20:17 彰化-20:30 雲林-20:41 嘉義-20:55 台南-21:13 左營-21:25|679:南港-19:10 台北-19:21 板橋-19:29 桃園-19:43 新竹-19:56 苗栗-20:09 台中-20:25 彰化-20:38 雲林-20:50 嘉義-21:07 台南-21:20 左營-21:32|157:南港-19:20 台北-19:31 板橋-19:39 桃園-19:55 新竹-20:08 苗栗-20:20 台中-20:35 彰化-20:48 雲林-21:00 嘉義-21:20 台南-21:45 左營-21:57|681:南港-19:35 台北-19:46 板橋-19:55 桃園-20:10 新竹-20:22 苗栗-20:35 台中-20:48 彰化-21:01 雲林-21:14 嘉義-21:33 台南-21:45 左營-21:57|1253:南港-19:40 台北-19:51 板橋-19:59 桃園-20:15 新竹-20:28 苗栗-20:40 台中-20:55 彰化-21:08 雲林-21:20 嘉義-21:40 台南-22:05 左營-22:17|857:南港-20:00 台北-20:11 板橋-20:19 桃園-20:34 新竹-20:47 苗栗-20:58 台中-21:17 彰化-21:30 雲林-21:41 嘉義-21:55 台南-22:13 左營-22:25|161:南港-20:20 台北-20:31 板橋-20:39 桃園-20:55 新竹-21:08 苗栗-21:20 台中-21:35 彰化-21:48 雲林-22:00 嘉義-22:20 台南-22:45 左營-22:57|687:南港-20:35 台北-20:46 板橋-20:55 桃園-21:10 新竹-21:22 苗栗-21:35 台中-21:48 彰化-22:01 雲林-22:14 嘉義-22:33 台南-22:45 左營-22:57|1257:南港-20:40 台北-20:51 板橋-20:59 桃園-21:15 新竹-21:28 苗栗-21:40 台中-21:55 彰化-22:08 雲林-22:20 嘉義-22:40 台南-23:05 左營-23:17|861:南港-21:00 台北-21:11 板橋-21:19 桃園-21:34 新竹-21:47 苗栗-21:58 台中-22:17 彰化-22:30 雲林-22:41 嘉義-22:55 台南-23:13 左營-23:25|165:南港-21:20 台北-21:31 板橋-21:39 桃園-21:55 新竹-22:08 苗栗-22:20 台中-22:35 彰化-22:48 雲林-23:00 嘉義-23:20 台南-23:45 左營-23:57|693:南港-21:30 台北-21:41 板橋-21:50 桃園-22:05 新竹-22:17 苗栗-22:30 台中-22:43 彰化-22:56 雲林-23:09 嘉義-23:28 台南-23:40 左營-23:52|333:南港-21:45 台北-21:56 板橋-22:05 桃園-22:15 新竹-22:27 苗栗-22:40 台中-22:49 彰化-23:01 雲林-23:12 嘉義-23:24 台南-23:42 左營-23:55|295:南港-22:05 台北-22:16 板橋-22:26 桃園-22:41 新竹-22:54 苗栗-23:07 台中-23:22 彰化-23:35 雲林-23:46 嘉義-00:05 台南-00:27 左營-00:39|598:左營-22:55 台南-23:08 嘉義-23:20 雲林-23:33 彰化-23:44 台中-00:05 苗栗-00:21 新竹-00:34 桃園-00:46 板橋-00:58 台北-01:08 南港-01:20`;
-
-        // Process HSR Data into Object (Fixed Parsing)
-        const HSR_TRAINS = {};
-        FULL_HSR_DATA_STR.split('|').forEach(trainStr => {
-            if(!trainStr.trim()) return;
-            const splitIndex = trainStr.indexOf(':');
-            const trainNo = trainStr.substring(0, splitIndex).trim();
-            const stationsStr = trainStr.substring(splitIndex + 1);
-            
-            const stations = {};
-            stationsStr.trim().split(' ').forEach(s => {
-                const parts = s.split('-');
-                if(parts.length >= 2) {
-                    const name = parts[0];
-                    const time = parts[1];
-                    stations[name] = time;
-                }
-            });
-            HSR_TRAINS[trainNo] = stations;
-        });
 
         // --- SCHEDULE DATA ---
         const SCHEDULE = [
@@ -381,11 +410,8 @@
         ];
 
         // --- COMPONENTS ---
-
         const WeatherWidget = ({ location, date }) => {
-            // Simulated Weather based on Season and Location
             const getSimulatedWeather = (loc, dateStr) => {
-                // Parse month from date string
                 const month = parseInt(dateStr.split('/')[1], 10);
                 const isWinter = month === 12 || month === 1 || month === 2;
                 const isSouth = loc.includes('屏東') || loc.includes('高雄') || loc.includes('成大');
@@ -411,8 +437,6 @@
             };
 
             const weather = getSimulatedWeather(location, date);
-
-            // iOS Weather Deep Link
             const handleClick = () => {
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                     window.location.href = 'weather://';
@@ -433,16 +457,8 @@
         };
 
         const HSRTicket = ({ transport, onUpdate }) => {
-            const { type, trainNo, from, to, paymentStatus, customText } = transport || {};
+            const { type, trainNo, from, to, paymentStatus, customText, departTime, arriveTime } = transport || {};
             
-            const trainTime = useMemo(() => {
-                if (type === 'HSR' && trainNo && from && to && HSR_TRAINS[trainNo]) {
-                    const t = HSR_TRAINS[trainNo];
-                    return { depart: t[from], arrive: t[to] };
-                }
-                return null;
-            }, [trainNo, from, to, type]);
-
             const updateField = (field, value) => {
                 onUpdate({ ...transport, [field]: value });
             };
@@ -469,66 +485,92 @@
             );
 
             return (
-                <div className="mt-3 kawaii-ticket">
-                    <div className="kawaii-ticket-inner">
-                        <div className="flex justify-between items-center mb-3">
-                            <span className="font-bold text-pink-500 text-sm flex items-center gap-1.5"><Icon name="Train" size={16} className="text-pink-400"/> 台灣高鐵</span>
-                            <button onClick={() => onUpdate(null)} className="text-gray-300 hover:text-red-400"><Icon name="X" size={16}/></button>
-                        </div>
-                        
-                        {/* Route Selection */}
-                        <div className="flex items-center justify-between mb-4 bg-pink-50 p-2 rounded-lg border border-pink-100">
-                            <select className="bg-transparent font-bold text-lg outline-none w-20 text-gray-700" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
-                                <option value="">起點</option>
+                <div className="mt-4 jp-ticket">
+                    {/* Pink Header Strip */}
+                    <div className="jp-ticket-header">
+                        <span className="flex items-center gap-1.5"><Icon name="Train" size={16}/> HSR TICKET</span>
+                        <span className="text-[10px] opacity-80">NO. {trainNo || '000'}</span>
+                    </div>
+
+                    <div className="jp-ticket-body">
+                        {/* Close Button */}
+                        <button onClick={() => onUpdate(null)} className="absolute top-2 right-2 text-gray-300 hover:text-red-400 z-20 bg-white rounded-full"><Icon name="X" size={16}/></button>
+
+                        {/* Station Selection */}
+                        <div className="flex items-center justify-between mb-4 px-2">
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
+                                <option value="">Start</option>
                                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
-                            <Icon name="ArrowRight" className="text-pink-300" size={16} />
-                            <select className="bg-transparent font-bold text-lg outline-none w-20 text-right text-gray-700" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
-                                <option value="">終點</option>
+                            <div className="flex flex-col items-center">
+                                <Icon name="ArrowRight" className="text-pink-300" size={20} />
+                                <div className="text-[9px] font-bold text-gray-300 tracking-widest mt-1">TO</div>
+                            </div>
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
+                                <option value="">End</option>
                                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
 
-                        {/* Train No Input & Time Display */}
-                        <div className="flex gap-3 mb-4">
-                            <div className="flex-1">
-                                <label className="text-[10px] font-bold text-gray-400 block mb-1">車次</label>
+                        {/* Dotted Divider */}
+                        <div className="border-t-2 border-dashed border-gray-200 mb-4 -mx-5"></div>
+
+                        {/* FIXED LAYOUT: Vertical Stack for Mobile */}
+                        <div className="space-y-4 mb-4">
+                            {/* Train No Row */}
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">TRAIN NO.</label>
                                 <input 
-                                    type="tel" 
-                                    className="w-full bg-white rounded-lg p-2 font-mono font-bold text-lg outline-none text-gray-600 border-2 border-pink-100 focus:border-pink-300 transition-colors placeholder-gray-200 text-center"
+                                    type="text" 
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    className="ticket-input text-xl w-full text-left pl-2"
                                     placeholder="000"
                                     value={trainNo || ''}
                                     onChange={(e) => updateField('trainNo', e.target.value)}
                                 />
                             </div>
-                            <div className="flex-[2] bg-white border-2 border-dashed border-pink-200 rounded-lg p-2 text-gray-600 flex items-center justify-center gap-3">
-                                <div className="text-center">
-                                    <div className="text-[10px] text-pink-300 font-bold">DEPART</div>
-                                    <div className="font-mono font-bold text-xl leading-none">{trainTime?.depart || '--:--'}</div>
+                            
+                            {/* Times Row - Flex with min-w-0 to prevent overflow */}
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex-1 min-w-0">
+                                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label>
+                                    <input 
+                                        type="time" 
+                                        className="ticket-input text-lg p-0 w-full"
+                                        value={departTime || ''}
+                                        onChange={(e) => updateField('departTime', e.target.value)}
+                                    />
                                 </div>
-                                <div className="text-pink-200 text-xs">➔</div>
-                                <div className="text-center">
-                                    <div className="text-[10px] text-pink-300 font-bold">ARRIVE</div>
-                                    <div className="font-mono font-bold text-xl leading-none">{trainTime?.arrive || '--:--'}</div>
+                                <div className="text-gray-300 pt-4">➤</div>
+                                <div className="flex-1 min-w-0">
+                                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">ARR 時間</label>
+                                    <input 
+                                        type="time" 
+                                        className="ticket-input text-lg p-0 w-full"
+                                        value={arriveTime || ''}
+                                        onChange={(e) => updateField('arriveTime', e.target.value)}
+                                    />
                                 </div>
                             </div>
                         </div>
-                        
-                        {trainNo && (!trainTime || !trainTime.depart) && (
-                            <div className="text-xs text-red-400 font-bold mb-2 text-center bg-red-50 p-1 rounded">⚠️ 查無此車次或站點</div>
-                        )}
 
-                        {/* Payment Status */}
-                        <div className="flex gap-2">
-                            {['公司付款', '已請款', '未請款'].map((status) => (
-                                <button 
-                                    key={status}
-                                    onClick={() => updateField('paymentStatus', status)}
-                                    className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg border transition-all ${paymentStatus === status ? 'bg-pink-400 text-white border-pink-400 shadow-md transform scale-105' : 'bg-white text-gray-400 border-gray-100 hover:bg-pink-50'}`}
-                                >
-                                    {status}
-                                </button>
-                            ))}
+                        {/* Footer: Payment Stamps & Fake Barcode */}
+                        <div className="flex items-end justify-between pt-2">
+                            <div className="flex gap-2">
+                                {['公司付款', '已請款', '未請款'].map((status) => (
+                                    <button 
+                                        key={status}
+                                        onClick={() => updateField('paymentStatus', status)}
+                                        className={`stamp-btn ${paymentStatus === status ? 'active' : ''}`}
+                                    >
+                                        {status}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="opacity-30">
+                                <Icon name="QrCode" size={32} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -538,7 +580,7 @@
         const HotelCard = ({ accommodation, weekLocation, onUpdate }) => {
             const accommodationSearchLink = accommodation 
                 ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(accommodation)}` 
-                : `https://www.google.com/maps/search/?api=1&query=${weekLocation}+住宿`;
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(weekLocation + '住宿')}`;
 
             return (
                 <div className="hotel-pass mt-2">
@@ -564,10 +606,9 @@
                             />
                         </div>
                         
-                        {/* Action Buttons */}
                         <div className="flex gap-2 pt-2">
                             <a 
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(accommodation || weekLocation + '住宿')}`} 
+                                href={accommodationSearchLink} 
                                 target="_blank" 
                                 className="flex-1 bg-purple-500 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md shadow-purple-200 hover:bg-purple-600 transition active:scale-95"
                             >
@@ -575,7 +616,6 @@
                             </a>
                         </div>
 
-                        {/* Embed Google Map iframe if accommodation is entered */}
                         {accommodation && (
                             <div className="rounded-xl overflow-hidden border-2 border-white shadow-md h-32 relative">
                                 <iframe
@@ -585,7 +625,7 @@
                                     loading="lazy"
                                     allowFullScreen
                                     referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps?q=${encodeURIComponent(accommodation)}&output=embed`}
+                                    src={`https://www.google.com/maps?q=${encodeURIComponent(accommodation)}&output=embed&z=15`}
                                 ></iframe>
                             </div>
                         )}
@@ -635,7 +675,6 @@
             );
         };
 
-        // Match Detail Modal (Floating Sheet)
         const TripDetailModal = ({ isOpen, onClose, weekData, user, savedData, onSaveData }) => {
             if (!isOpen) return null;
 
@@ -649,7 +688,7 @@
             };
             
             const handleHotelUpdate = (field, val) => {
-                onSaveData(field, weekId, val); // field is 'accommodation'
+                onSaveData(field, weekId, val);
             };
 
             return (
@@ -669,7 +708,6 @@
                             </button>
                         </div>
                         
-                        {/* Accommodation */}
                         <HotelCard 
                             accommodation={accommodation} 
                             weekLocation={weekData.location} 
@@ -678,7 +716,6 @@
 
                         <div className="dashed-line w-full my-8"></div>
 
-                        {/* Transport */}
                         <div className="space-y-6">
                             <div>
                                 <h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center">Go</div> 去程交通</h4>
@@ -690,10 +727,9 @@
                             </div>
                         </div>
 
-                        <div className="h-20"></div> {/* Spacer */}
+                        <div className="h-20"></div>
                     </div>
                     
-                    {/* Fixed Bottom Save Button */}
                     <div className="absolute bottom-6 left-0 right-0 px-6 pointer-events-none">
                         <button onClick={onClose} className="w-full max-w-md mx-auto bg-gray-900 text-white py-4 rounded-2xl font-bold shadow-xl pointer-events-auto active:scale-95 transition-transform flex items-center justify-center gap-2">
                             <Icon name="Check" size={18} /> 完成規劃
@@ -707,16 +743,13 @@
             const [isTripModalOpen, setIsTripModalOpen] = useState(false);
             const [editingMatchId, setEditingMatchId] = useState(null);
 
-            // Check if user is in any roster for this week
             const isMyWeek = weekData.matches.some(m => {
                 const roster = savedData.rosters?.[m.id] || m.roster;
                 return roster.includes(user);
             });
 
-            // Is any match a theme day?
             const isThemeWeek = weekData.matches.some(m => m.themeDay);
 
-            // Group matches by Day
             const matchesByDay = weekData.matches.reduce((acc, match) => {
                 const dayKey = `${match.date} (${match.day})`;
                 if (!acc[dayKey]) acc[dayKey] = [];
@@ -726,8 +759,6 @@
 
             return (
                 <div className={`mb-6 rounded-[32px] overflow-hidden transition-all duration-500 ${isThemeWeek ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-200 shadow-xl shadow-orange-100/50' : 'bg-white border border-gray-100 shadow-lg shadow-gray-100'}`}>
-                    
-                    {/* Header */}
                     <div className={`px-6 py-4 flex justify-between items-center ${isThemeWeek ? 'bg-orange-100/50' : 'bg-gray-50/80'}`}>
                         <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black shadow-sm ${isThemeWeek ? 'bg-orange-400 text-white' : 'bg-white text-gray-400'}`}>
@@ -747,7 +778,6 @@
                         )}
                     </div>
 
-                    {/* Matches grouped by Day */}
                     <div className="p-4 space-y-4">
                         {Object.entries(matchesByDay).map(([dateStr, matches]) => (
                             <div key={dateStr} className="bg-white/60 border-2 border-dashed border-gray-200 rounded-[24px] p-4 relative">
@@ -798,7 +828,6 @@
                         ))}
                     </div>
 
-                    {/* Floating Action Button for Trip (Only if my week) */}
                     {isMyWeek && (
                         <div className="p-4 pt-0">
                             <button 
@@ -810,7 +839,6 @@
                         </div>
                     )}
 
-                    {/* Modals */}
                     <TripDetailModal 
                         isOpen={isTripModalOpen}
                         onClose={() => setIsTripModalOpen(false)}
@@ -859,21 +887,19 @@
                 }));
             };
 
-            // Transform raw SCHEDULE into Week-based groups
             const groupedSchedule = useMemo(() => {
                 const groups = {};
                 SCHEDULE.forEach(match => {
-                    const key = match.week; // Use week number as key
+                    const key = match.week;
                     if (!groups[key]) {
                         groups[key] = {
                             week: match.week,
                             location: match.location,
-                            date: match.date, // Just pick first date for reference
+                            date: match.date,
                             day: match.day,
                             matches: []
                         };
                     }
-                    // Flatten matches
                     match.matches.forEach(m => {
                         groups[key].matches.push({
                             ...m,
@@ -888,7 +914,6 @@
             if (!user) {
                 return (
                     <div className="min-h-screen relative overflow-hidden journal-bg flex flex-col items-center justify-center p-4">
-                        {/* ... Login Screen (Same as before) ... */}
                         <div className="absolute top-10 left-10 text-pink-300 opacity-60 animate-float">
                             <Icon name="Heart" size={40} />
                         </div>
@@ -931,7 +956,6 @@
 
             return (
                 <div className="max-w-md mx-auto min-h-screen pb-24 bg-[#FFF0F5] relative shadow-2xl">
-                    {/* Header */}
                     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md px-5 py-4 border-b border-pink-50 flex justify-between items-center washi-header">
                         <div>
                             <h1 className="font-black text-pink-500 text-xl leading-none flex items-center gap-2 drop-shadow-sm">
@@ -951,7 +975,6 @@
                         </div>
                     </header>
 
-                    {/* Filter Toggle */}
                     <div className="px-5 pt-6 pb-2">
                         <div className="flex items-center justify-between">
                             <h2 className="text-2xl font-black text-gray-800">Schedule</h2>
@@ -964,7 +987,6 @@
                         </div>
                     </div>
 
-                    {/* Main Content */}
                     <main className="p-5 pt-2 space-y-2">
                         {groupedSchedule
                             .filter(weekData => {
