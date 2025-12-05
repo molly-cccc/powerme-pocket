@@ -86,14 +86,14 @@
         .jp-ticket::before, .jp-ticket::after {
             content: "";
             position: absolute;
-            top: 52%; /* Position near the middle */
+            top: 54%; /* Adjusted Position */
             width: 24px;
             height: 24px;
             background-color: #FAFAFA; /* Must match modal background */
             border-radius: 50%;
             z-index: 10;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* Inner shadow for depth */
-            pointer-events: none; /* Prevent blocking clicks */
+            pointer-events: none;
         }
         .jp-ticket::before { left: -12px; }
         .jp-ticket::after { right: -12px; }
@@ -119,7 +119,7 @@
         .jp-ticket-body {
             padding: 16px 20px;
             position: relative;
-            z-index: 20; /* Ensure body is above background effects */
+            z-index: 20;
         }
 
         /* Ticket Input Fields (Underlined style) */
@@ -136,9 +136,26 @@
             outline: none;
             transition: border-color 0.3s;
             position: relative;
-            z-index: 30; /* Ensure inputs are top-most */
+            z-index: 30;
         }
         .ticket-input:focus { border-bottom-color: #EC4899; }
+
+        /* Custom Select for Time */
+        .time-select {
+            appearance: none;
+            background: transparent;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: #374151;
+            border: none;
+            border-bottom: 2px solid #FEE2E2;
+            border-radius: 0;
+            text-align: center;
+            padding: 2px 0;
+            outline: none;
+            width: 100%;
+        }
+        .time-select:focus { border-bottom-color: #EC4899; }
 
         /* Stamp Effect for Payment */
         .stamp-btn {
@@ -161,7 +178,7 @@
             transform: rotate(-3deg) scale(1.05); /* Slight tilt like a stamp */
         }
         .stamp-btn.active::after {
-            content: "済"; /* Japanese "Done" or checkmark feel */
+            content: "済";
             position: absolute;
             top: -8px;
             right: -8px;
@@ -462,6 +479,43 @@
             );
         };
 
+        // --- Helper for Time Selector (Native Selects for iOS Reliability) ---
+        const TimeSelector = ({ value, onChange }) => {
+            const [hours, minutes] = (value || '').split(':');
+            
+            const handleHourChange = (e) => {
+                const h = e.target.value;
+                const m = minutes || '00';
+                onChange(`${h}:${m}`);
+            };
+
+            const handleMinChange = (e) => {
+                const m = e.target.value;
+                const h = hours || '06'; // default start hour
+                onChange(`${h}:${m}`);
+            };
+
+            return (
+                <div className="flex items-center gap-1 border-b-2 border-[#FEE2E2] focus-within:border-[#EC4899] transition-colors relative z-30">
+                    <select className="time-select" value={hours || ''} onChange={handleHourChange}>
+                        <option value="" disabled>時</option>
+                        {[...Array(19).keys()].map(i => {
+                            const h = (i + 5).toString().padStart(2, '0'); // 05:00 - 23:00
+                            return <option key={h} value={h}>{h}</option>;
+                        })}
+                    </select>
+                    <span className="text-gray-300 font-bold">:</span>
+                    <select className="time-select" value={minutes || ''} onChange={handleMinChange}>
+                        <option value="" disabled>分</option>
+                        {[...Array(60).keys()].map(i => {
+                            const m = i.toString().padStart(2, '0'); // 00, 01, 02...
+                            return <option key={m} value={m}>{m}</option>;
+                        })}
+                    </select>
+                </div>
+            );
+        };
+
         const HSRTicket = ({ transport, onUpdate }) => {
             const { type, trainNo, from, to, paymentStatus, customText, departTime, arriveTime } = transport || {};
             
@@ -537,26 +591,16 @@
                                 />
                             </div>
                             
-                            {/* Times Row - Flex with min-w-0 to prevent overflow */}
+                            {/* Times Row - Using Custom Time Selector */}
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                     <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label>
-                                    <input 
-                                        type="time" 
-                                        className="ticket-input text-lg p-0 w-full relative z-20"
-                                        value={departTime || ''}
-                                        onChange={(e) => updateField('departTime', e.target.value)}
-                                    />
+                                    <TimeSelector value={departTime} onChange={(val) => updateField('departTime', val)} />
                                 </div>
                                 <div className="text-gray-300 pt-4">➤</div>
                                 <div className="flex-1 min-w-0">
                                     <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">ARR 時間</label>
-                                    <input 
-                                        type="time" 
-                                        className="ticket-input text-lg p-0 w-full relative z-20"
-                                        value={arriveTime || ''}
-                                        onChange={(e) => updateField('arriveTime', e.target.value)}
-                                    />
+                                    <TimeSelector value={arriveTime} onChange={(val) => updateField('arriveTime', val)} />
                                 </div>
                             </div>
                         </div>
