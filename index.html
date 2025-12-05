@@ -93,6 +93,7 @@
             border-radius: 50%;
             z-index: 10;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* Inner shadow for depth */
+            pointer-events: none; /* Prevent blocking clicks */
         }
         .jp-ticket::before { left: -12px; }
         .jp-ticket::after { right: -12px; }
@@ -117,6 +118,8 @@
         /* Ticket Body */
         .jp-ticket-body {
             padding: 16px 20px;
+            position: relative;
+            z-index: 20; /* Ensure body is above background effects */
         }
 
         /* Ticket Input Fields (Underlined style) */
@@ -132,6 +135,8 @@
             color: #374151;
             outline: none;
             transition: border-color 0.3s;
+            position: relative;
+            z-index: 30; /* Ensure inputs are top-most */
         }
         .ticket-input:focus { border-bottom-color: #EC4899; }
 
@@ -146,6 +151,7 @@
             transition: all 0.2s;
             position: relative;
             background: #F9FAFB;
+            z-index: 30;
         }
         .stamp-btn.active {
             border-color: #EC4899;
@@ -498,7 +504,7 @@
 
                         {/* Station Selection */}
                         <div className="flex items-center justify-between mb-4 px-2">
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition relative z-30" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
                                 <option value="">Start</option>
                                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
@@ -506,7 +512,7 @@
                                 <Icon name="ArrowRight" className="text-pink-300" size={20} />
                                 <div className="text-[9px] font-bold text-gray-300 tracking-widest mt-1">TO</div>
                             </div>
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition relative z-30" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
                                 <option value="">End</option>
                                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
@@ -524,7 +530,7 @@
                                     type="text" 
                                     inputMode="numeric"
                                     pattern="[0-9]*"
-                                    className="ticket-input text-xl w-full text-left pl-2"
+                                    className="ticket-input text-xl w-full text-left pl-2 relative z-20"
                                     placeholder="000"
                                     value={trainNo || ''}
                                     onChange={(e) => updateField('trainNo', e.target.value)}
@@ -537,7 +543,7 @@
                                     <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label>
                                     <input 
                                         type="time" 
-                                        className="ticket-input text-lg p-0 w-full"
+                                        className="ticket-input text-lg p-0 w-full relative z-20"
                                         value={departTime || ''}
                                         onChange={(e) => updateField('departTime', e.target.value)}
                                     />
@@ -547,7 +553,7 @@
                                     <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">ARR 時間</label>
                                     <input 
                                         type="time" 
-                                        className="ticket-input text-lg p-0 w-full"
+                                        className="ticket-input text-lg p-0 w-full relative z-20"
                                         value={arriveTime || ''}
                                         onChange={(e) => updateField('arriveTime', e.target.value)}
                                     />
