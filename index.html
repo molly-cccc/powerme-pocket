@@ -11,48 +11,46 @@
     
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
+        /* CSS Variables */
+        :root {
+            --theme-color: #EC4899;
+            --theme-light: #FBCFE8;
+            --theme-bg: #FFF0F5;
+            --theme-fade: rgba(236, 72, 153, 0.1);
+        }
+
         body {
             font-family: 'Zen Maru Gothic', sans-serif;
-            background-color: #FFF0F5; /* Lavender Blush */
+            background-color: var(--theme-bg);
             color: #4A4A4A;
             -webkit-tap-highlight-color: transparent;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
+            transition: background-color 0.3s ease;
         }
         
-        /* Font for Ticket Data */
-        .font-ticket {
-            font-family: 'Space Mono', monospace;
-        }
+        .font-ticket { font-family: 'Space Mono', monospace; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #FBCFE8; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--theme-light); border-radius: 10px; }
 
-        /* Washi Tape Header */
         .washi-header {
             background-color: rgba(255, 255, 255, 0.95);
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(244, 114, 182, 0.05) 10px, rgba(244, 114, 182, 0.05) 20px);
-            box-shadow: 0 2px 10px rgba(244, 114, 182, 0.1);
-            border-bottom: 1px solid #FBCFE8;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, var(--theme-fade) 10px, var(--theme-fade) 20px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--theme-light);
         }
 
-        /* Toggle Switch */
-        .toggle-checkbox:checked { right: 0; border-color: #EC4899; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #EC4899; }
-
-        /* Cute Input Styles */
+        /* Cute Inputs */
         .cute-input {
-            border: 2px solid #FBCFE8;
+            border: 2px solid var(--theme-light);
             border-radius: 16px;
             padding: 10px 14px;
             outline: none;
@@ -61,193 +59,86 @@
             font-size: 14px;
             width: 100%;
         }
-        .cute-input:focus { border-color: #EC4899; box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15); }
+        .cute-input:focus { border-color: var(--theme-color); box-shadow: 0 0 0 3px var(--theme-fade); }
 
-        /* Dashed Line */
-        .dashed-line {
-            background-image: linear-gradient(to right, #F9A8D4 50%, rgba(255,255,255,0) 0%);
-            background-position: bottom;
-            background-size: 10px 2px;
-            background-repeat: repeat-x;
-            height: 2px;
-        }
-
-        /* --- NEW JAPANESE TICKET STYLE --- */
+        /* Japanese Ticket Style */
         .jp-ticket {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px rgba(236, 72, 153, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px var(--theme-fade);
             position: relative;
             overflow: hidden;
             border: 1px solid #FEE2E2;
         }
-        
-        /* The side notches */
         .jp-ticket::before, .jp-ticket::after {
-            content: "";
-            position: absolute;
-            top: 54%; /* Adjusted Position */
-            width: 24px;
-            height: 24px;
-            background-color: #FAFAFA; /* Must match modal background */
-            border-radius: 50%;
-            z-index: 10;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* Inner shadow for depth */
-            pointer-events: none;
+            content: ""; position: absolute; top: 54%; width: 24px; height: 24px;
+            background-color: #FAFAFA; border-radius: 50%; z-index: 10;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none;
         }
         .jp-ticket::before { left: -12px; }
         .jp-ticket::after { right: -12px; }
 
-        /* Ticket Header Strip */
         .jp-ticket-header {
-            background: #F472B6; /* Pink-400 */
-            background-image: radial-gradient(#FBCFE8 15%, transparent 16%), radial-gradient(#FBCFE8 15%, transparent 16%);
-            background-size: 10px 10px;
-            background-position: 0 0, 5px 5px;
-            color: white;
-            padding: 8px 16px;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: var(--theme-color);
+            background-image: radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%), radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%);
+            background-size: 10px 10px; background-position: 0 0, 5px 5px;
+            color: white; padding: 8px 16px; font-size: 12px; font-weight: 900; letter-spacing: 2px;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px dashed rgba(255,255,255,0.5);
         }
+        .jp-ticket-body { padding: 16px 20px; position: relative; z-index: 20; }
 
-        /* Ticket Body */
-        .jp-ticket-body {
-            padding: 16px 20px;
-            position: relative;
-            z-index: 20;
-        }
-
-        /* Ticket Input Fields (Underlined style) */
         .ticket-input {
-            width: 100%;
-            text-align: center;
-            background: transparent;
-            border-bottom: 2px solid #FEE2E2;
-            border-radius: 0;
-            padding: 4px 0;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            color: #374151;
-            outline: none;
-            transition: border-color 0.3s;
-            position: relative;
-            z-index: 30;
+            width: 100%; text-align: center; background: transparent;
+            border-bottom: 2px solid #F3F4F6; border-radius: 0; padding: 4px 0;
+            font-family: 'Space Mono', monospace; font-weight: 700; color: #374151;
+            outline: none; transition: border-color 0.3s; position: relative; z-index: 30;
         }
-        .ticket-input:focus { border-bottom-color: #EC4899; }
+        .ticket-input:focus { border-bottom-color: var(--theme-color); }
 
-        /* Custom Select for Time */
         .time-select {
-            appearance: none;
-            background: transparent;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            color: #374151;
-            border: none;
-            border-bottom: 2px solid #FEE2E2;
-            border-radius: 0;
-            text-align: center;
-            padding: 2px 0;
-            outline: none;
-            width: 100%;
+            appearance: none; background: transparent; font-family: 'Space Mono', monospace;
+            font-weight: 700; color: #374151; border: none; border-bottom: 2px solid #F3F4F6;
+            border-radius: 0; text-align: center; padding: 2px 0; outline: none; width: 100%;
         }
-        .time-select:focus { border-bottom-color: #EC4899; }
+        .time-select:focus { border-bottom-color: var(--theme-color); }
 
-        /* Stamp Effect for Payment */
+        /* Stamp Button */
         .stamp-btn {
-            border: 2px solid #E5E7EB;
-            color: #9CA3AF;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 11px;
-            font-weight: bold;
-            transition: all 0.2s;
-            position: relative;
-            background: #F9FAFB;
-            z-index: 30;
+            border: 2px solid #E5E7EB; color: #9CA3AF; border-radius: 8px; padding: 6px 10px;
+            font-size: 11px; font-weight: bold; transition: all 0.2s; position: relative; background: #F9FAFB; z-index: 30;
         }
         .stamp-btn.active {
-            border-color: #EC4899;
-            color: #EC4899;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.1);
-            transform: rotate(-3deg) scale(1.05); /* Slight tilt like a stamp */
+            border-color: var(--theme-color); color: var(--theme-color); background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 0 2px var(--theme-fade); transform: rotate(-3deg) scale(1.05);
         }
         .stamp-btn.active::after {
-            content: "済";
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 18px;
-            height: 18px;
-            background: #EC4899;
-            color: white;
-            font-size: 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
+            content: "済"; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px;
+            background: var(--theme-color); color: white; font-size: 10px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: 2px solid white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Hotel Pass Style */
-        .hotel-pass {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.15);
-            border: 1px solid #E9D5FF;
-            overflow: hidden;
-            position: relative;
-        }
-        .hotel-pass-header {
-            background: linear-gradient(to right, #F3E8FF, #E9D5FF);
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px dashed #fff;
-        }
-        .hotel-pass::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 16px;
-            width: 40px;
-            height: 8px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 0 0 8px 8px;
-        }
+        /* Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: var(--theme-color); }
+        .toggle-checkbox:checked + .toggle-label { background-color: var(--theme-color); }
 
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+        /* Color Swatch */
+        .color-swatch {
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            border: 3px solid transparent; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
+        .color-swatch.selected { border-color: #4B5563; transform: scale(1.1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+        /* Animations */
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-5px) rotate(2deg); } 100% { transform: translateY(0px) rotate(0deg); } }
         .animate-float { animation: float 4s ease-in-out infinite; }
-
-        /* Main Logo Sticker Effect */
-        .logo-sticker {
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
+        .logo-sticker { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s ease; }
         .logo-sticker:hover { transform: scale(1.05) rotate(2deg); }
-        
-        /* Sticker Effect */
-        .sticker-btn {
-            border: 3px solid white;
-            box-shadow: 2px 3px 0px rgba(236, 72, 153, 0.2);
-            transition: all 0.2s;
-        }
-        .sticker-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0px 0px 0px rgba(236, 72, 153, 0.2);
-        }
+        .sticker-btn { border: 3px solid white; box-shadow: 2px 3px 0px rgba(0,0,0,0.1); transition: all 0.2s; }
+        .sticker-btn:active { transform: translateY(2px); box-shadow: none; }
+        .dashed-line { background-image: linear-gradient(to right, var(--theme-light) 50%, rgba(255,255,255,0) 0%); background-position: bottom; background-size: 10px 2px; background-repeat: repeat-x; height: 2px; }
 
     </style>
 </head>
@@ -256,261 +147,132 @@
         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
             <div style="font-size: 60px; animation: bounce 1s infinite;">🏐</div>
             <div style="color: #EC4899; font-family: sans-serif; margin-top: 16px; font-weight: bold; font-size: 16px; letter-spacing: 2px;">LOADING...</div>
-            <style>
-                @keyframes bounce {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-10px); }
-                }
-            </style>
+            <style>@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }</style>
         </div>
     </div>
 
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
-            if(message.includes("ResizeObserver")) return;
+            if(!message.includes("ResizeObserver")) {
+                alert("載入發生錯誤 (Error): " + message + "\n請截圖告知開發者");
+            }
         };
     </script>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // --- ICON COMPONENTS ---
-        const ICONS = {
-            X: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-            Train: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/></svg>,
-            ArrowRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            Edit2: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>,
-            MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
-            Sun: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
-            Cloud: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M17.5 19c0-1.7-1.3-3-3-3h-11c-1.7 0-3 1.3-3 3s1.3 3 3 3h11c1.7 0 3-1.3 3-3z"/><path d="M17.5 16c2.5 0 4.5-2 4.5-4.5S20 7 17.5 7c-.6 0-1.2.1-1.7.3C15.3 4.4 12.4 2.5 9 2.5 4.6 2.5 1 6.1 1 10.5c0 1.2.2 2.3.7 3.3"/></svg>,
-            CloudSun: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>,
-            CloudRain: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>,
-            Bed: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>,
-            BookHeart: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M12 8a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" fill="currentColor" fillOpacity="0.2"/></svg>,
-            BarChart2: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>,
-            LogOut: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>,
-            Heart: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
-            Star: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-            Sparkles: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 9h4"/><path d="M3 5h4"/></svg>,
-            Check: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="20 6 9 17 4 12"/></svg>,
-            Navigation: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>,
-            QrCode: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
-        };
-
-        const Icon = ({ name, size = 24, className = "" }) => {
-            const SpecificIcon = ICONS[name];
-            if (!SpecificIcon) return null;
-            return <SpecificIcon width={size} height={size} className={className} />;
-        };
+        // --- CONSTANTS & HELPERS ---
+        const THEMES = [
+            { id: 'pink', name: '甜心粉', color: '#EC4899', light: '#FBCFE8', bg: '#FFF0F5' },
+            { id: 'blue', name: '應援藍', color: '#0EA5E9', light: '#BAE6FD', bg: '#F0F9FF' },
+            { id: 'orange', name: '活力橘', color: '#F97316', light: '#FED7AA', bg: '#FFF7ED' },
+            { id: 'purple', name: '夢幻紫', color: '#A855F7', light: '#E9D5FF', bg: '#FAF5FF' },
+            { id: 'green', name: '清新綠', color: '#10B981', light: '#A7F3D0', bg: '#ECFDF5' },
+        ];
 
         const ALL_MEMBERS = ["詠嫺", "凌襄", "昕蓉", "叮叮", "智智", "汶霖", "藍心", "宥心", "芝芝", "郁倪", "時雨", "葳柔"];
         const STATIONS = ["南港", "台北", "板橋", "桃園", "新竹", "苗栗", "台中", "彰化", "雲林", "嘉義", "台南", "左營"];
 
+        // SVG Path Data (Global to avoid re-render issues)
+        const ICON_PATHS = {
+            X: <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
+            Train: <><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/></>,
+            ArrowRight: <><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></>,
+            Edit2: <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>,
+            MapPin: <><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></>,
+            Sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></>,
+            Cloud: <path d="M17.5 19c0-1.7-1.3-3-3-3h-11c-1.7 0-3 1.3-3 3s1.3 3 3 3h11c1.7 0 3-1.3 3-3z"/>,
+            CloudSun: <><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></>,
+            CloudRain: <><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></>,
+            Bed: <><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></>,
+            BookHeart: <><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M12 8a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" fill="currentColor" fillOpacity="0.2"/></>,
+            BarChart2: <><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></>,
+            LogOut: <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></>,
+            Heart: <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>,
+            Star: <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>,
+            Sparkles: <><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 9h4"/><path d="M3 5h4"/></>,
+            Check: <polyline points="20 6 9 17 4 12"/>,
+            Navigation: <polygon points="3 11 22 2 13 21 11 13 3 11"/>,
+            QrCode: <><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></>,
+            Settings: <><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></>,
+            Trash: <><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></>
+        };
+
+        const Icon = ({ name, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {ICON_PATHS[name]}
+            </svg>
+        );
+
+        // --- SAFE STORAGE ---
+        const safeGet = (key) => { try { return localStorage.getItem(key); } catch(e) { return null; } };
+        const safeSet = (key, val) => { try { localStorage.setItem(key, val); } catch(e) {} };
+        const safeRemove = (key) => { try { localStorage.removeItem(key); } catch(e) {} };
+
         // --- SCHEDULE DATA ---
         const SCHEDULE = [
-            { week: 1, location: "成大體育館", date: "2025/11/01", day: "六", matches: [
-                { id: "w1m1", time: "13:00", team: "新北中纖", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] },
-                { id: "w1m2", time: "18:30", team: "雲林美津濃", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] }
-            ]},
-            { week: 3, location: "彰師大體育館", date: "2025/11/15", day: "六", matches: [
-                { id: "w3m1", time: "14:00", team: "雲林美津濃", roster: ["智智", "汶霖", "藍心", "宥心"] },
-                { id: "w3m2", time: "18:00", team: "新北中纖", roster: ["智智", "汶霖", "藍心", "宥心"] }
-            ]},
-            { week: 3, location: "彰師大體育館", date: "2025/11/16", day: "日", matches: [
-                { id: "w3m3", time: "15:00", team: "雲林美津濃", roster: ["智智", "汶霖", "藍心", "宥心"] },
-                { id: "w3m4", time: "17:00", team: "新北中纖", roster: ["智智", "汶霖", "藍心", "宥心"] }
-            ]},
-            { week: 4, location: "雲林縣立體育館", date: "2025/11/22", day: "六", matches: [
-                { id: "w4m1", time: "18:00", team: "雲林美津濃", roster: ["智智", "藍心", "芝芝", "郁倪"], note: "其他 8 人參加新北耶誕活動" }
-            ]},
-            { week: 4, location: "雲林縣立體育館", date: "2025/11/23", day: "日", matches: [
-                { id: "w4m2", time: "15:00", team: "雲林美津濃", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true }
-            ]},
-            { week: 5, location: "雲林縣立體育館", date: "2025/11/29", day: "六", matches: [
-                { id: "w5m1", time: "16:00", team: "雲林美津濃", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] },
-                { id: "w5m2", time: "18:00", team: "新北中纖", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] }
-            ]},
-            { week: 5, location: "雲林縣立體育館", date: "2025/11/30", day: "日", matches: [
-                { id: "w5m3", time: "15:00", team: "雲林美津濃", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] },
-                { id: "w5m4", time: "17:00", team: "新北中纖", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] }
-            ]},
-            { week: 6, location: "高雄市鳳山體育館", date: "2025/12/06", day: "六", matches: [
-                { id: "w6m1", time: "14:00", team: "新北中纖", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] },
-                { id: "w6m2", time: "18:00", team: "雲林美津濃", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] }
-            ]},
-            { week: 6, location: "高雄市鳳山體育館", date: "2025/12/07", day: "日", matches: [
-                { id: "w6m3", time: "15:00", team: "新北中纖", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] },
-                { id: "w6m4", time: "17:00", team: "雲林美津濃", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] }
-            ]},
-            { week: 7, location: "高雄市鳳山體育館", date: "2025/12/13", day: "六", matches: [
-                { id: "w7m1", time: "18:00", team: "雲林美津濃", roster: ["葳柔", "汶霖", "郁倪", "宥心"] }
-            ]},
-            { week: 7, location: "高雄市鳳山體育館", date: "2025/12/14", day: "日", matches: [
-                { id: "w7m2", time: "13:00", team: "雲林美津濃", roster: ["葳柔", "汶霖", "郁倪", "宥心"] }
-            ]},
-            { week: 8, location: "東山高中體育館", date: "2025/12/21", day: "日", matches: [
-                { id: "w8m1", time: "17:00", team: "雲林美津濃", roster: ["時雨", "叮叮", "汶霖", "凌襄"] }
-            ]},
-            { week: 9, location: "中原大學體育館", date: "2025/12/27", day: "六", matches: [
-                { id: "w9m1", time: "18:00", team: "新北中纖", roster: ["郁倪", "昕蓉", "汶霖", "芝芝"] }
-            ]},
-            { week: 9, location: "中原大學體育館", date: "2025/12/28", day: "日", matches: [
-                { id: "w9m2", time: "13:00", team: "新北中纖", roster: ["郁倪", "昕蓉", "汶霖", "芝芝"] }
-            ]},
-            { week: 10, location: "中原大學體育館", date: "2026/01/03", day: "六", matches: [
-                { id: "w10m1", time: "14:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] },
-                { id: "w10m2", time: "18:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] }
-            ]},
-            { week: 10, location: "中原大學體育館", date: "2026/01/04", day: "日", matches: [
-                { id: "w10m3", time: "15:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] },
-                { id: "w10m4", time: "17:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] }
-            ]},
-            { week: 11, location: "新北市新莊體育館", date: "2026/01/10", day: "六", matches: [
-                { id: "w11m1", time: "16:00", team: "新北中纖", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true }
-            ]},
-            { week: 11, location: "新北市新莊體育館", date: "2026/01/11", day: "日", matches: [
-                { id: "w11m2", time: "15:00", team: "新北中纖", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true }
-            ]},
-            { week: 12, location: "新竹縣立體育館", date: "2026/01/17", day: "六", matches: [
-                { id: "w12m1", time: "14:00", team: "新北中纖", roster: ["時雨", "郁倪", "凌襄", "智智"] },
-                { id: "w12m2", time: "18:00", team: "雲林美津濃", roster: ["時雨", "郁倪", "凌襄", "智智"] }
-            ]},
-            { week: 12, location: "新竹縣立體育館", date: "2026/01/18", day: "日", matches: [
-                { id: "w12m3", time: "13:00", team: "新北中纖", roster: ["時雨", "郁倪", "凌襄", "智智"] },
-                { id: "w12m4", time: "17:00", team: "雲林美津濃", roster: ["時雨", "郁倪", "凌襄", "智智"] }
-            ]},
-            { week: 13, location: "屏東縣立體育館", date: "2026/01/24", day: "六", matches: [
-                { id: "w13m1", time: "14:00", team: "新北中纖", roster: ["汶霖", "叮叮", "芝芝", "郁倪"] }
-            ]},
-            { week: 13, location: "屏東縣立體育館", date: "2026/01/25", day: "日", matches: [
-                { id: "w13m2", time: "13:00", team: "新北中纖", roster: ["汶霖", "叮叮", "芝芝", "郁倪"] }
-            ]},
-            { week: 14, location: "屏東縣立體育館", date: "2026/01/31", day: "六", matches: [
-                { id: "w14m1", time: "18:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "藍心", "芝芝"] }
-            ]},
-            { week: 14, location: "屏東縣立體育館", date: "2026/02/01", day: "日", matches: [
-                { id: "w14m2", time: "17:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "藍心", "芝芝"] }
-            ]},
-            { week: 15, location: "國北教大體育館", date: "2026/02/07", day: "六", matches: [
-                { id: "w15m1", time: "16:00", team: "雲林美津濃", roster: ["郁倪", "詠嫺", "凌襄", "叮叮"] },
-                { id: "w15m2", time: "18:00", team: "新北中纖", roster: ["郁倪", "詠嫺", "凌襄", "宥心"] }
-            ]},
-            { week: 15, location: "國北教大體育館", date: "2026/02/08", day: "日", matches: [
-                { id: "w15m3", time: "17:00", team: "雲林美津濃", roster: ["智智", "藍心", "昕蓉", "叮叮"] }
-            ]},
-            { week: 16, location: "雲林縣立體育館", date: "2026/02/28", day: "六", matches: [
-                { id: "w16m1", time: "18:00", team: "新北中纖", roster: ["藍心", "汶霖", "智智", "芝芝"] }
-            ]},
-            { week: 16, location: "雲林縣立體育館", date: "2026/03/01", day: "日", matches: [
-                { id: "w16m2", time: "15:00", team: "新北中纖", roster: ["藍心", "汶霖", "智智", "芝芝"] }
-            ]},
-            { week: 17, location: "北辰國小體育館", date: "2026/03/07", day: "六", matches: [
-                { id: "w17m1", time: "16:00", team: "雲林美津濃", roster: ["郁倪", "宥心", "芝芝", "藍心"] }
-            ]},
-            { week: 17, location: "北辰國小體育館", date: "2026/03/08", day: "日", matches: [
-                { id: "w17m2", time: "15:00", team: "雲林美津濃", roster: ["郁倪", "宥心", "芝芝", "藍心"] }
-            ]},
-            { week: 18, location: "北辰國小體育館", date: "2026/03/14", day: "六", matches: [
-                { id: "w18m1", time: "14:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "叮叮", "智智"] },
-                { id: "w18m2", time: "18:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "叮叮", "智智"] }
-            ]},
-            { week: 18, location: "北辰國小體育館", date: "2026/03/15", day: "日", matches: [
-                { id: "w18m3", time: "13:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "叮叮", "智智"] },
-                { id: "w18m4", time: "17:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "叮叮", "智智"] }
-            ]},
-            { week: 19, location: "屏東縣立體育館", date: "2026/03/20", day: "五", matches: [
-                { id: "w19m1", time: "12:00", team: "新北中纖", roster: ["時雨", "凌襄", "汶霖", "藍心"] },
-                { id: "w19m2", time: "16:00", team: "雲林美津濃", roster: ["時雨", "凌襄", "汶霖", "藍心"] }
-            ]},
-            { week: 20, location: "屏東縣立體育館", date: "2026/03/21", day: "六", matches: [
-                { id: "w20m1", time: "16:00", team: "女子組賽事", roster: [] },
-                { id: "w20m2", time: "18:00", team: "男子組賽事", roster: [] }
-            ]},
-            { week: 20, location: "屏東縣立體育館", date: "2026/03/22", day: "日", matches: [
-                { id: "w20m3", time: "15:00", team: "女子組賽事", roster: [] },
-                { id: "w20m4", time: "17:00", team: "男子組賽事", roster: [] }
-            ]}
+            { week: 1, location: "成大體育館", date: "2025/11/01", day: "六", matches: [ { id: "w1m1", time: "13:00", team: "新北中纖", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] }, { id: "w1m2", time: "18:30", team: "雲林美津濃", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] } ]},
+            { week: 3, location: "彰師大體育館", date: "2025/11/15", day: "六", matches: [ { id: "w3m1", time: "14:00", team: "雲林美津濃", roster: ["智智", "汶霖", "藍心", "宥心"] }, { id: "w3m2", time: "18:00", team: "新北中纖", roster: ["智智", "汶霖", "藍心", "宥心"] } ]},
+            { week: 3, location: "彰師大體育館", date: "2025/11/16", day: "日", matches: [ { id: "w3m3", time: "15:00", team: "雲林美津濃", roster: ["智智", "汶霖", "藍心", "宥心"] }, { id: "w3m4", time: "17:00", team: "新北中纖", roster: ["智智", "汶霖", "藍心", "宥心"] } ]},
+            { week: 4, location: "雲林縣立體育館", date: "2025/11/22", day: "六", matches: [ { id: "w4m1", time: "18:00", team: "雲林美津濃", roster: ["智智", "藍心", "芝芝", "郁倪"], note: "其他 8 人參加新北耶誕活動" } ]},
+            { week: 4, location: "雲林縣立體育館", date: "2025/11/23", day: "日", matches: [ { id: "w4m2", time: "15:00", team: "雲林美津濃", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true } ]},
+            { week: 5, location: "雲林縣立體育館", date: "2025/11/29", day: "六", matches: [ { id: "w5m1", time: "16:00", team: "雲林美津濃", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] }, { id: "w5m2", time: "18:00", team: "新北中纖", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] } ]},
+            { week: 5, location: "雲林縣立體育館", date: "2025/11/30", day: "日", matches: [ { id: "w5m3", time: "15:00", team: "雲林美津濃", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] }, { id: "w5m4", time: "17:00", team: "新北中纖", roster: ["宥心", "詠嫺", "葳柔", "凌襄"] } ]},
+            { week: 6, location: "高雄市鳳山體育館", date: "2025/12/06", day: "六", matches: [ { id: "w6m1", time: "14:00", team: "新北中纖", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] }, { id: "w6m2", time: "18:00", team: "雲林美津濃", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] } ]},
+            { week: 6, location: "高雄市鳳山體育館", date: "2025/12/07", day: "日", matches: [ { id: "w6m3", time: "15:00", team: "新北中纖", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] }, { id: "w6m4", time: "17:00", team: "雲林美津濃", roster: ["詠嫺", "叮叮", "芝芝", "時雨"] } ]},
+            { week: 7, location: "高雄市鳳山體育館", date: "2025/12/13", day: "六", matches: [ { id: "w7m1", time: "18:00", team: "雲林美津濃", roster: ["葳柔", "汶霖", "郁倪", "宥心"] } ]},
+            { week: 7, location: "高雄市鳳山體育館", date: "2025/12/14", day: "日", matches: [ { id: "w7m2", time: "13:00", team: "雲林美津濃", roster: ["葳柔", "汶霖", "郁倪", "宥心"] } ]},
+            { week: 8, location: "東山高中體育館", date: "2025/12/21", day: "日", matches: [ { id: "w8m1", time: "17:00", team: "雲林美津濃", roster: ["時雨", "叮叮", "汶霖", "凌襄"] } ]},
+            { week: 9, location: "中原大學體育館", date: "2025/12/27", day: "六", matches: [ { id: "w9m1", time: "18:00", team: "新北中纖", roster: ["郁倪", "昕蓉", "汶霖", "芝芝"] } ]},
+            { week: 9, location: "中原大學體育館", date: "2025/12/28", day: "日", matches: [ { id: "w9m2", time: "13:00", team: "新北中纖", roster: ["郁倪", "昕蓉", "汶霖", "芝芝"] } ]},
+            { week: 10, location: "中原大學體育館", date: "2026/01/03", day: "六", matches: [ { id: "w10m1", time: "14:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] }, { id: "w10m2", time: "18:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] } ]},
+            { week: 10, location: "中原大學體育館", date: "2026/01/04", day: "日", matches: [ { id: "w10m3", time: "15:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] }, { id: "w10m4", time: "17:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "時雨", "詠嫺"] } ]},
+            { week: 11, location: "新北市新莊體育館", date: "2026/01/10", day: "六", matches: [ { id: "w11m1", time: "16:00", team: "新北中纖", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true } ]},
+            { week: 11, location: "新北市新莊體育館", date: "2026/01/11", day: "日", matches: [ { id: "w11m2", time: "15:00", team: "新北中纖", roster: ["凌襄", "叮叮", "宥心", "昕蓉", "時雨", "智智", "汶霖", "芝芝", "葳柔", "藍心", "詠嫺", "郁倪"], themeDay: true } ]},
+            { week: 12, location: "新竹縣立體育館", date: "2026/01/17", day: "六", matches: [ { id: "w12m1", time: "14:00", team: "新北中纖", roster: ["時雨", "郁倪", "凌襄", "智智"] }, { id: "w12m2", time: "18:00", team: "雲林美津濃", roster: ["時雨", "郁倪", "凌襄", "智智"] } ]},
+            { week: 12, location: "新竹縣立體育館", date: "2026/01/18", day: "日", matches: [ { id: "w12m3", time: "13:00", team: "新北中纖", roster: ["時雨", "郁倪", "凌襄", "智智"] }, { id: "w12m4", time: "17:00", team: "雲林美津濃", roster: ["時雨", "郁倪", "凌襄", "智智"] } ]},
+            { week: 13, location: "屏東縣立體育館", date: "2026/01/24", day: "六", matches: [ { id: "w13m1", time: "14:00", team: "新北中纖", roster: ["汶霖", "叮叮", "芝芝", "郁倪"] } ]},
+            { week: 13, location: "屏東縣立體育館", date: "2026/01/25", day: "日", matches: [ { id: "w13m2", time: "13:00", team: "新北中纖", roster: ["汶霖", "叮叮", "芝芝", "郁倪"] } ]},
+            { week: 14, location: "屏東縣立體育館", date: "2026/01/31", day: "六", matches: [ { id: "w14m1", time: "18:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "藍心", "芝芝"] } ]},
+            { week: 14, location: "屏東縣立體育館", date: "2026/02/01", day: "日", matches: [ { id: "w14m2", time: "17:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "藍心", "芝芝"] } ]},
+            { week: 15, location: "國北教大體育館", date: "2026/02/07", day: "六", matches: [ { id: "w15m1", time: "16:00", team: "雲林美津濃", roster: ["郁倪", "詠嫺", "凌襄", "叮叮"] }, { id: "w15m2", time: "18:00", team: "新北中纖", roster: ["郁倪", "詠嫺", "凌襄", "宥心"] } ]},
+            { week: 15, location: "國北教大體育館", date: "2026/02/08", day: "日", matches: [ { id: "w15m3", time: "17:00", team: "雲林美津濃", roster: ["智智", "藍心", "昕蓉", "叮叮"] } ]},
+            { week: 16, location: "雲林縣立體育館", date: "2026/02/28", day: "六", matches: [ { id: "w16m1", time: "18:00", team: "新北中纖", roster: ["藍心", "汶霖", "智智", "芝芝"] } ]},
+            { week: 16, location: "雲林縣立體育館", date: "2026/03/01", day: "日", matches: [ { id: "w16m2", time: "15:00", team: "新北中纖", roster: ["藍心", "汶霖", "智智", "芝芝"] } ]},
+            { week: 17, location: "北辰國小體育館", date: "2026/03/07", day: "六", matches: [ { id: "w17m1", time: "16:00", team: "雲林美津濃", roster: ["郁倪", "宥心", "芝芝", "藍心"] } ]},
+            { week: 17, location: "北辰國小體育館", date: "2026/03/08", day: "日", matches: [ { id: "w17m2", time: "15:00", team: "雲林美津濃", roster: ["郁倪", "宥心", "芝芝", "藍心"] } ]},
+            { week: 18, location: "北辰國小體育館", date: "2026/03/14", day: "六", matches: [ { id: "w18m1", time: "14:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "叮叮", "智智"] }, { id: "w18m2", time: "18:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "叮叮", "智智"] } ]},
+            { week: 18, location: "北辰國小體育館", date: "2026/03/15", day: "日", matches: [ { id: "w18m3", time: "13:00", team: "雲林美津濃", roster: ["葳柔", "昕蓉", "叮叮", "智智"] }, { id: "w18m4", time: "17:00", team: "新北中纖", roster: ["葳柔", "昕蓉", "叮叮", "智智"] } ]},
+            { week: 19, location: "屏東縣立體育館", date: "2026/03/20", day: "五", matches: [ { id: "w19m1", time: "12:00", team: "新北中纖", roster: ["時雨", "凌襄", "汶霖", "藍心"] }, { id: "w19m2", time: "16:00", team: "雲林美津濃", roster: ["時雨", "凌襄", "汶霖", "藍心"] } ]},
+            { week: 20, location: "屏東縣立體育館", date: "2026/03/21", day: "六", matches: [ { id: "w20m1", time: "16:00", team: "女子組賽事", roster: [] }, { id: "w20m2", time: "18:00", team: "男子組賽事", roster: [] } ]},
+            { week: 20, location: "屏東縣立體育館", date: "2026/03/22", day: "日", matches: [ { id: "w20m3", time: "15:00", team: "女子組賽事", roster: [] }, { id: "w20m4", time: "17:00", team: "男子組賽事", roster: [] } ]}
         ];
 
-        // --- COMPONENTS ---
         const WeatherWidget = ({ location, date }) => {
-            const getSimulatedWeather = (loc, dateStr) => {
-                const month = parseInt(dateStr.split('/')[1], 10);
-                const isWinter = month === 12 || month === 1 || month === 2;
-                const isSouth = loc.includes('屏東') || loc.includes('高雄') || loc.includes('成大');
-                const isNorth = loc.includes('台北') || loc.includes('新北') || loc.includes('中原') || loc.includes('國北');
-
-                let temp, label, type;
-
-                if (isSouth) {
-                    temp = isWinter ? '22-26°C' : '24-29°C';
-                    type = 'Sun';
-                    label = '晴時多雲';
-                } else if (isNorth) {
-                    temp = isWinter ? '14-18°C' : '18-22°C';
-                    type = isWinter ? 'CloudRain' : 'Cloud';
-                    label = isWinter ? '陰有雨' : '多雲';
-                } else {
-                    temp = isWinter ? '18-23°C' : '21-26°C';
-                    type = 'CloudSun';
-                    label = '多雲時晴';
-                }
-                
-                return { temp, type, label };
-            };
-
-            const weather = getSimulatedWeather(location, date);
+            const temp = location.includes('屏東') || location.includes('高雄') ? '22-26°C' : '18-22°C';
             const handleClick = () => {
-                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                    window.location.href = 'weather://';
-                } else {
-                    window.open(`https://www.google.com/search?q=${location}+天氣`, '_blank');
-                }
+                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) { window.location.href = 'weather://'; } 
+                else { window.open(`https://www.google.com/search?q=${location}+天氣`, '_blank'); }
             };
-
             return (
                 <div onClick={handleClick} className="bg-sky-50 border border-sky-100 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm cursor-pointer">
-                    <Icon name={weather.type} size={20} className={weather.type === 'Sun' ? 'text-orange-400' : weather.type.includes('Rain') ? 'text-blue-400' : 'text-sky-400'} />
-                    <div>
-                        <div className="text-xs font-bold text-gray-600 leading-none">{weather.temp}</div>
-                        <div className="text-[9px] text-gray-400 font-medium leading-none mt-0.5">{weather.label}</div>
-                    </div>
+                    <Icon name="Sun" size={20} className="text-orange-400" />
+                    <div><div className="text-xs font-bold text-gray-600 leading-none">{temp}</div><div className="text-[9px] text-gray-400 font-medium leading-none mt-0.5">晴時多雲</div></div>
                 </div>
             );
         };
 
-        // --- Helper for Time Selector (Native Selects for iOS Reliability) ---
         const TimeSelector = ({ value, onChange }) => {
             const [hours, minutes] = (value || '').split(':');
-            
-            const handleHourChange = (e) => {
-                const h = e.target.value;
-                const m = minutes || '00';
-                onChange(`${h}:${m}`);
-            };
-
-            const handleMinChange = (e) => {
-                const m = e.target.value;
-                const h = hours || '06'; // default start hour
-                onChange(`${h}:${m}`);
-            };
-
             return (
-                <div className="flex items-center gap-1 border-b-2 border-[#FEE2E2] focus-within:border-[#EC4899] transition-colors relative z-30">
-                    <select className="time-select" value={hours || ''} onChange={handleHourChange}>
-                        <option value="" disabled>時</option>
-                        {[...Array(19).keys()].map(i => {
-                            const h = (i + 5).toString().padStart(2, '0'); // 05:00 - 23:00
-                            return <option key={h} value={h}>{h}</option>;
-                        })}
+                <div className="flex items-center gap-1 border-b-2 border-[#F3F4F6] focus-within:border-[var(--theme-color)] transition-colors relative z-30">
+                    <select className="time-select" value={hours || ''} onChange={e => onChange(`${e.target.value}:${minutes||'00'}`)}>
+                        <option value="" disabled>時</option>{[...Array(19).keys()].map(i=><option key={i+5} value={(i+5).toString().padStart(2,'0')}>{(i+5).toString().padStart(2,'0')}</option>)}
                     </select>
                     <span className="text-gray-300 font-bold">:</span>
-                    <select className="time-select" value={minutes || ''} onChange={handleMinChange}>
-                        <option value="" disabled>分</option>
-                        {[...Array(60).keys()].map(i => {
-                            const m = i.toString().padStart(2, '0'); // 00, 01, 02...
-                            return <option key={m} value={m}>{m}</option>;
-                        })}
+                    <select className="time-select" value={minutes || ''} onChange={e => onChange(`${hours||'06'}:${e.target.value}`)}>
+                        <option value="" disabled>分</option>{[...Array(60).keys()].map(i=><option key={i} value={i.toString().padStart(2,'0')}>{i.toString().padStart(2,'0')}</option>)}
                     </select>
                 </div>
             );
@@ -518,14 +280,11 @@
 
         const HSRTicket = ({ transport, onUpdate }) => {
             const { type, trainNo, from, to, paymentStatus, customText, departTime, arriveTime } = transport || {};
-            
-            const updateField = (field, value) => {
-                onUpdate({ ...transport, [field]: value });
-            };
+            const updateField = (field, value) => { onUpdate({ ...transport, [field]: value }); };
 
             if (!type) return (
                 <div className="flex gap-2 mt-2">
-                    <button onClick={() => onUpdate({type: 'HSR'})} className="flex-1 bg-pink-100 text-pink-600 rounded-lg p-2 text-sm font-bold border border-pink-200 hover:bg-pink-200 transition">🚄 高鐵</button>
+                    <button onClick={() => onUpdate({type: 'HSR'})} className="flex-1 text-[var(--theme-color)] rounded-lg p-2 text-sm font-bold border border-[var(--theme-light)] hover:bg-[var(--theme-bg)] transition" style={{backgroundColor: 'var(--theme-bg)'}}>🚄 高鐵</button>
                     <button onClick={() => onUpdate({type: 'SELF'})} className="flex-1 bg-gray-100 text-gray-600 rounded-lg p-2 text-sm font-bold border border-gray-200 hover:bg-gray-200 transition">🚗 自理</button>
                 </div>
             );
@@ -534,64 +293,36 @@
                  <div className="mt-3 bg-white border border-gray-200 rounded-xl p-4 relative shadow-sm">
                     <button onClick={() => onUpdate(null)} className="absolute top-2 right-2 text-gray-300 hover:text-red-400"><Icon name="X" size={16} /></button>
                     <label className="text-xs text-gray-500 font-bold block mb-1">自理方式備註</label>
-                    <input 
-                        type="text" 
-                        placeholder="例：開車、搭便車..." 
-                        value={customText || ''}
-                        onChange={(e) => updateField('customText', e.target.value)}
-                        className="cute-input w-full"
-                    />
+                    <input type="text" placeholder="例：開車、搭便車..." value={customText || ''} onChange={(e) => updateField('customText', e.target.value)} className="cute-input w-full"/>
                 </div>
             );
 
             return (
                 <div className="mt-4 jp-ticket">
-                    {/* Pink Header Strip */}
                     <div className="jp-ticket-header">
                         <span className="flex items-center gap-1.5"><Icon name="Train" size={16}/> HSR TICKET</span>
                         <span className="text-[10px] opacity-80">NO. {trainNo || '000'}</span>
                     </div>
-
                     <div className="jp-ticket-body">
-                        {/* Close Button */}
                         <button onClick={() => onUpdate(null)} className="absolute top-2 right-2 text-gray-300 hover:text-red-400 z-20 bg-white rounded-full"><Icon name="X" size={16}/></button>
-
-                        {/* Station Selection */}
                         <div className="flex items-center justify-between mb-4 px-2">
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition relative z-30" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
-                                <option value="">Start</option>
-                                {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
+                                <option value="">Start</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                             <div className="flex flex-col items-center">
-                                <Icon name="ArrowRight" className="text-pink-300" size={20} />
+                                <Icon name="ArrowRight" className="text-[var(--theme-light)]" size={20} />
                                 <div className="text-[9px] font-bold text-gray-300 tracking-widest mt-1">TO</div>
                             </div>
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-pink-500 transition relative z-30" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
-                                <option value="">End</option>
-                                {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
+                                <option value="">End</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
-
-                        {/* Dotted Divider */}
                         <div className="border-t-2 border-dashed border-gray-200 mb-4 -mx-5"></div>
-
-                        {/* FIXED LAYOUT: Vertical Stack for Mobile */}
                         <div className="space-y-4 mb-4">
-                            {/* Train No Row */}
                             <div>
                                 <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">TRAIN NO.</label>
-                                <input 
-                                    type="text" 
-                                    inputMode="numeric"
-                                    pattern="[0-9]*"
-                                    className="ticket-input text-xl w-full text-left pl-2 relative z-20"
-                                    placeholder="000"
-                                    value={trainNo || ''}
-                                    onChange={(e) => updateField('trainNo', e.target.value)}
-                                />
+                                <input type="text" inputMode="numeric" pattern="[0-9]*" className="ticket-input text-xl w-full text-left pl-2 relative z-20" placeholder="000" value={trainNo || ''} onChange={(e) => updateField('trainNo', e.target.value)} />
                             </div>
-                            
-                            {/* Times Row - Using Custom Time Selector */}
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                     <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label>
@@ -604,23 +335,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        {/* Footer: Payment Stamps & Fake Barcode */}
                         <div className="flex items-end justify-between pt-2">
                             <div className="flex gap-2">
                                 {['公司付款', '已請款', '未請款'].map((status) => (
-                                    <button 
-                                        key={status}
-                                        onClick={() => updateField('paymentStatus', status)}
-                                        className={`stamp-btn ${paymentStatus === status ? 'active' : ''}`}
-                                    >
-                                        {status}
-                                    </button>
+                                    <button key={status} onClick={() => updateField('paymentStatus', status)} className={`stamp-btn ${paymentStatus === status ? 'active' : ''}`}>{status}</button>
                                 ))}
                             </div>
-                            <div className="opacity-30">
-                                <Icon name="QrCode" size={32} />
-                            </div>
+                            <div className="opacity-30"><Icon name="QrCode" size={32} /></div>
                         </div>
                     </div>
                 </div>
@@ -628,57 +349,69 @@
         };
 
         const HotelCard = ({ accommodation, weekLocation, onUpdate }) => {
-            const accommodationSearchLink = accommodation 
-                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(accommodation)}` 
-                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(weekLocation + '住宿')}`;
-
+            const accommodationSearchLink = accommodation ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(accommodation)}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(weekLocation + '住宿')}`;
             return (
                 <div className="hotel-pass mt-2">
                     <div className="hotel-pass-header">
                         <div className="flex items-center gap-2">
-                            <div className="bg-purple-100 p-1.5 rounded-lg text-purple-500">
-                                <Icon name="Bed" size={16} />
-                            </div>
+                            <div className="p-1.5 rounded-lg text-white" style={{backgroundColor: 'var(--theme-light)'}}><Icon name="Bed" size={16} /></div>
                             <span className="text-sm font-bold text-gray-700 tracking-wider">BOOKING</span>
                         </div>
-                        <div className="text-[10px] font-bold text-purple-400 bg-purple-50 px-2 py-0.5 rounded-full">PASS</div>
+                        <div className="text-[10px] font-bold text-white px-2 py-0.5 rounded-full" style={{backgroundColor: 'var(--theme-light)'}}>PASS</div>
                     </div>
-                    
-                    <div className="p-5 bg-gradient-to-b from-white to-purple-50/30 space-y-4">
+                    <div className="p-5 bg-gradient-to-b from-white to-[var(--theme-bg)]/30 space-y-4">
                         <div>
                             <label className="text-[10px] font-bold text-gray-400 block mb-1.5 uppercase tracking-wide">Hotel Name</label>
-                            <input 
-                                type="text" 
-                                placeholder="輸入住宿名稱..." 
-                                className="w-full text-lg font-bold text-gray-800 bg-transparent border-b-2 border-purple-100 pb-1 outline-none focus:border-purple-400 transition-colors placeholder-gray-300"
-                                value={accommodation || ''}
-                                onChange={(e) => onUpdate('accommodation', e.target.value)}
-                            />
+                            <input type="text" placeholder="輸入住宿名稱..." className="w-full text-lg font-bold text-gray-800 bg-transparent border-b-2 border-purple-100 pb-1 outline-none focus:border-[var(--theme-color)] transition-colors placeholder-gray-300" value={accommodation || ''} onChange={(e) => onUpdate(e.target.value)} />
                         </div>
-                        
                         <div className="flex gap-2 pt-2">
-                            <a 
-                                href={accommodationSearchLink} 
-                                target="_blank" 
-                                className="flex-1 bg-purple-500 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md shadow-purple-200 hover:bg-purple-600 transition active:scale-95"
-                            >
+                            <a href={accommodationSearchLink} target="_blank" className="flex-1 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition active:scale-95" style={{backgroundColor: 'var(--theme-color)', boxShadow: '0 4px 6px var(--theme-fade)'}}>
                                 <Icon name="Navigation" size={14} /> 導航
                             </a>
                         </div>
+                    </div>
+                </div>
+            );
+        };
 
-                        {accommodation && (
-                            <div className="rounded-xl overflow-hidden border-2 border-white shadow-md h-32 relative">
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0 }}
-                                    loading="lazy"
-                                    allowFullScreen
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps?q=${encodeURIComponent(accommodation)}&output=embed&z=15`}
-                                ></iframe>
+        const SettingsModal = ({ isOpen, onClose, currentThemeId, onThemeChange, hidePast, onToggleHidePast, onResetData }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 pointer-events-auto" onClick={onClose}>
+                    <div className="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold text-center text-gray-800 mb-6 flex items-center justify-center gap-2">設定</h3>
+                        
+                        <div className="mb-6">
+                            <label className="text-xs font-bold text-gray-400 block mb-3 uppercase tracking-wide">主題色系</label>
+                            <div className="flex justify-between px-2">
+                                {THEMES.map(t => (
+                                    <div key={t.id} className="flex flex-col items-center gap-1">
+                                        <div onClick={() => onThemeChange(t.id)} className={`color-swatch ${currentThemeId === t.id ? 'selected' : ''}`} style={{backgroundColor: t.color}}>
+                                            {currentThemeId === t.id && <Icon name="Check" size={20} className="text-white"/>}
+                                        </div>
+                                        <span className="text-[10px] text-gray-500 font-bold">{t.name}</span>
+                                    </div>
+                                ))}
                             </div>
-                        )}
+                        </div>
+
+                        <div className="mb-6">
+                            <label className="text-xs font-bold text-gray-400 block mb-3 uppercase tracking-wide">顯示設定</label>
+                            <div className="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                <span className="font-bold text-gray-600 text-sm">隱藏過期賽程</span>
+                                <div className="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="hidePast" id="hidePast" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 top-0" checked={hidePast} onChange={onToggleHidePast} style={{right: hidePast ? '0' : 'auto', left: hidePast ? 'auto' : '0', borderColor: hidePast ? 'var(--theme-color)' : '#E5E7EB'}}/>
+                                    <label htmlFor="hidePast" className="block overflow-hidden h-6 rounded-full bg-gray-200 cursor-pointer" style={{backgroundColor: hidePast ? 'var(--theme-color)' : '#E5E7EB'}}></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="text-xs font-bold text-gray-400 block mb-3 uppercase tracking-wide">資料管理</label>
+                            <button onClick={() => { if(confirm('確定要清除所有資料嗎？此操作無法復原。')) { onResetData(); onClose(); } }} className="w-full py-3 rounded-xl bg-red-50 text-red-500 font-bold border border-red-100 hover:bg-red-100 transition flex items-center justify-center gap-2"><Icon name="Trash" size={16}/> 清除所有資料</button>
+                        </div>
+
+                        <button onClick={onClose} className="w-full py-3 rounded-xl bg-gray-900 text-white font-bold shadow-lg hover:bg-gray-800 transition mt-2">完成</button>
                     </div>
                 </div>
             );
@@ -686,39 +419,23 @@
 
         const RosterEditModal = ({ isOpen, onClose, currentRoster, onSave }) => {
             const [selected, setSelected] = useState([]);
-
-            useEffect(() => {
-                if (isOpen) setSelected([...currentRoster]);
-            }, [isOpen, currentRoster]);
-
-            const toggleMember = (name) => {
-                if (selected.includes(name)) {
-                    setSelected(selected.filter(n => n !== name));
-                } else {
-                    setSelected([...selected, name]);
-                }
-            };
-
+            useEffect(() => { if (isOpen) setSelected([...currentRoster]); }, [isOpen, currentRoster]);
+            const toggleMember = (name) => { if (selected.includes(name)) { setSelected(selected.filter(n => n !== name)); } else { setSelected([...selected, name]); } };
             if (!isOpen) return null;
-
             return (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 pointer-events-auto" onClick={onClose}>
                     <div className="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl relative" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold text-center text-pink-600 mb-6">編輯出席名單</h3>
+                        <h3 className="text-xl font-bold text-center mb-6" style={{color: 'var(--theme-color)'}}>編輯出席名單</h3>
                         <div className="grid grid-cols-4 gap-3 mb-8">
                             {ALL_MEMBERS.map(name => (
-                                <button
-                                    key={name}
-                                    onClick={() => toggleMember(name)}
-                                    className={`aspect-square rounded-2xl flex items-center justify-center text-sm font-bold border-2 transition-all ${selected.includes(name) ? 'bg-pink-500 text-white border-pink-500 shadow-lg shadow-pink-200 transform scale-105' : 'bg-white text-gray-400 border-gray-100 hover:border-pink-200'}`}
-                                >
+                                <button key={name} onClick={() => toggleMember(name)} className={`aspect-square rounded-2xl flex items-center justify-center text-sm font-bold border-2 transition-all ${selected.includes(name) ? 'text-white shadow-lg transform scale-105' : 'bg-white text-gray-400 border-gray-100'}`} style={selected.includes(name) ? {backgroundColor: 'var(--theme-color)', borderColor: 'var(--theme-color)', boxShadow: '0 4px 10px var(--theme-fade)'} : {}}>
                                     {name}
                                 </button>
                             ))}
                         </div>
                         <div className="flex gap-3">
                             <button onClick={onClose} className="flex-1 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition">取消</button>
-                            <button onClick={() => { onSave(selected); onClose(); }} className="flex-1 py-3 rounded-xl bg-pink-500 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-600 transition">儲存</button>
+                            <button onClick={() => { onSave(selected); onClose(); }} className="flex-1 py-3 rounded-xl text-white font-bold shadow-lg hover:opacity-90 transition" style={{backgroundColor: 'var(--theme-color)', boxShadow: '0 4px 10px var(--theme-fade)'}}>儲存</button>
                         </div>
                     </div>
                 </div>
@@ -727,63 +444,29 @@
 
         const TripDetailModal = ({ isOpen, onClose, weekData, user, savedData, onSaveData }) => {
             if (!isOpen) return null;
-
             const weekId = `week_${weekData.week}`;
             const transportOut = savedData.transport?.[`${weekId}_out`];
             const transportIn = savedData.transport?.[`${weekId}_in`];
             const accommodation = savedData.accommodation?.[weekId];
-
-            const handleTransportUpdate = (dir, data) => {
-                onSaveData('transport', `${weekId}_${dir}`, data);
-            };
-            
-            const handleHotelUpdate = (field, val) => {
-                onSaveData(field, weekId, val);
-            };
-
             return (
                 <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center pointer-events-none">
                     <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] pointer-events-auto transition-opacity" onClick={onClose}></div>
-                    
                     <div className="bg-[#FAFAFA] w-full max-w-md sm:rounded-[32px] rounded-t-[32px] p-6 pointer-events-auto transform transition-transform duration-300 ease-out shadow-[0_-10px_40px_rgba(0,0,0,0.1)] max-h-[85vh] overflow-y-auto">
                         <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-6"></div>
-                        
                         <div className="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 className="text-2xl font-bold text-gray-800">行程規劃</h3>
-                                <p className="text-xs text-gray-400 font-bold mt-1">第 {weekData.week} 週 • {weekData.location}</p>
-                            </div>
-                            <button onClick={onClose} className="w-10 h-10 bg-white rounded-full shadow-sm border border-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition">
-                                <Icon name="X" size={20} />
-                            </button>
+                            <div><h3 className="text-2xl font-bold text-gray-800">行程規劃</h3><p className="text-xs text-gray-400 font-bold mt-1">第 {weekData.week} 週 • {weekData.location}</p></div>
+                            <button onClick={onClose} className="w-10 h-10 bg-white rounded-full shadow-sm border border-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition"><Icon name="X" size={20} /></button>
                         </div>
-                        
-                        <HotelCard 
-                            accommodation={accommodation} 
-                            weekLocation={weekData.location} 
-                            onUpdate={handleHotelUpdate} 
-                        />
-
+                        <HotelCard accommodation={accommodation} weekLocation={weekData.location} onUpdate={(val) => onSaveData('accommodation', weekId, val)} />
                         <div className="dashed-line w-full my-8"></div>
-
                         <div className="space-y-6">
-                            <div>
-                                <h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center">Go</div> 去程交通</h4>
-                                <HSRTicket transport={transportOut} onUpdate={(d) => handleTransportUpdate('out', d)} />
-                            </div>
-                            <div>
-                                <h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center">Back</div> 回程交通</h4>
-                                <HSRTicket transport={transportIn} onUpdate={(d) => handleTransportUpdate('in', d)} />
-                            </div>
+                            <div><h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center">Go</div> 去程交通</h4><HSRTicket transport={transportOut} onUpdate={(d) => onSaveData('transport', `${weekId}_out`, d)} /></div>
+                            <div><h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center">Back</div> 回程交通</h4><HSRTicket transport={transportIn} onUpdate={(d) => onSaveData('transport', `${weekId}_in`, d)} /></div>
                         </div>
-
                         <div className="h-20"></div>
                     </div>
-                    
                     <div className="absolute bottom-6 left-0 right-0 px-6 pointer-events-none">
-                        <button onClick={onClose} className="w-full max-w-md mx-auto bg-gray-900 text-white py-4 rounded-2xl font-bold shadow-xl pointer-events-auto active:scale-95 transition-transform flex items-center justify-center gap-2">
-                            <Icon name="Check" size={18} /> 完成規劃
-                        </button>
+                        <button onClick={onClose} className="w-full max-w-md mx-auto bg-gray-900 text-white py-4 rounded-2xl font-bold shadow-xl pointer-events-auto active:scale-95 transition-transform flex items-center justify-center gap-2"><Icon name="Check" size={18} /> 完成規劃</button>
                     </div>
                 </div>
             );
@@ -792,83 +475,40 @@
         const WeekCard = ({ weekData, user, savedData, onSaveData }) => {
             const [isTripModalOpen, setIsTripModalOpen] = useState(false);
             const [editingMatchId, setEditingMatchId] = useState(null);
-
-            const isMyWeek = weekData.matches.some(m => {
-                const roster = savedData.rosters?.[m.id] || m.roster;
-                return roster.includes(user);
-            });
-
+            const isMyWeek = weekData.matches.some(m => { const roster = savedData.rosters?.[m.id] || m.roster; return roster.includes(user); });
             const isThemeWeek = weekData.matches.some(m => m.themeDay);
-
-            const matchesByDay = weekData.matches.reduce((acc, match) => {
-                const dayKey = `${match.date} (${match.day})`;
-                if (!acc[dayKey]) acc[dayKey] = [];
-                acc[dayKey].push(match);
-                return acc;
-            }, {});
+            const matchesByDay = weekData.matches.reduce((acc, match) => { const dayKey = `${match.date} (${match.day})`; if (!acc[dayKey]) acc[dayKey] = []; acc[dayKey].push(match); return acc; }, {});
 
             return (
-                <div className={`mb-6 rounded-[32px] overflow-hidden transition-all duration-500 ${isThemeWeek ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-200 shadow-xl shadow-orange-100/50' : 'bg-white border border-gray-100 shadow-lg shadow-gray-100'}`}>
-                    <div className={`px-6 py-4 flex justify-between items-center ${isThemeWeek ? 'bg-orange-100/50' : 'bg-gray-50/80'}`}>
+                <div className={`mb-6 rounded-[32px] overflow-hidden transition-all duration-500 ${isThemeWeek ? 'border-2 shadow-xl' : 'bg-white border border-gray-100 shadow-lg shadow-gray-100'}`} style={isThemeWeek ? {borderColor: 'var(--theme-light)', backgroundColor: 'var(--theme-bg)', boxShadow: '0 10px 20px var(--theme-fade)'} : {}}>
+                    <div className={`px-6 py-4 flex justify-between items-center ${isThemeWeek ? '' : 'bg-gray-50/80'}`} style={isThemeWeek ? {backgroundColor: 'rgba(255,255,255,0.6)'} : {}}>
                         <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black shadow-sm ${isThemeWeek ? 'bg-orange-400 text-white' : 'bg-white text-gray-400'}`}>
-                                {weekData.week}
-                            </div>
-                            <div>
-                                <div className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-0.5">WEEK</div>
-                                <div className="font-bold text-gray-700 text-sm flex items-center gap-1">
-                                    <Icon name="MapPin" size={12} className="text-gray-400" /> {weekData.location}
-                                </div>
-                            </div>
+                            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black shadow-sm ${isThemeWeek ? 'text-white' : 'bg-white text-gray-400'}`} style={isThemeWeek ? {backgroundColor: 'var(--theme-color)'} : {}}> {weekData.week} </div>
+                            <div><div className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-0.5">WEEK</div><div className="font-bold text-gray-700 text-sm flex items-center gap-1"><Icon name="MapPin" size={12} className="text-gray-400" /> {weekData.location}</div></div>
                         </div>
-                        {isThemeWeek && (
-                            <div className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[10px] font-bold rounded-full shadow-md flex items-center gap-1">
-                                <Icon name="Sparkles" size={10} /> 主題日
-                            </div>
-                        )}
+                        {isThemeWeek && (<div className="px-3 py-1 text-white text-[10px] font-bold rounded-full shadow-md flex items-center gap-1" style={{background: 'linear-gradient(135deg, #FCD34D, #F59E0B)'}}><Icon name="Sparkles" size={10} /> 主題日</div>)}
                     </div>
-
                     <div className="p-4 space-y-4">
                         {Object.entries(matchesByDay).map(([dateStr, matches]) => (
                             <div key={dateStr} className="bg-white/60 border-2 border-dashed border-gray-200 rounded-[24px] p-4 relative">
-                                <div className="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
-                                    <div className="text-sm font-bold text-gray-500">{dateStr}</div>
-                                    <WeatherWidget location={weekData.location} date={matches[0].date} />
-                                </div>
-                                
+                                <div className="flex justify-between items-center mb-3 border-b border-gray-100 pb-2"><div className="text-sm font-bold text-gray-500">{dateStr}</div><WeatherWidget location={weekData.location} date={matches[0].date} /></div>
                                 {matches.map((match) => {
                                     const isMizuno = match.team.includes('美津濃') || match.team.includes('男子');
                                     const currentRoster = savedData.rosters?.[match.id] || match.roster;
                                     const score = savedData.scores?.[match.id] || '';
                                     const isInRoster = currentRoster.includes(user);
-
                                     return (
                                         <div key={match.id} className={`mb-4 last:mb-0 ${isInRoster ? '' : 'opacity-60'}`}>
                                             <div className="flex justify-between items-center mb-2">
                                                 <div className="flex items-center gap-2">
                                                     <span className="font-mono text-lg font-black text-gray-800">{match.time}</span>
-                                                    <span className={`px-3 py-1 text-sm font-black tracking-wide rounded-lg text-white shadow-sm ${isMizuno ? 'bg-blue-500' : 'bg-rose-500'}`}>
-                                                        {match.team.replace('雲林美津濃','美津濃').replace('新北中纖','中纖')}
-                                                    </span>
+                                                    <span className={`px-3 py-1 text-sm font-black tracking-wide rounded-lg text-white shadow-sm ${isMizuno ? 'bg-blue-500' : 'bg-rose-500'}`}>{match.team.replace('雲林美津濃','美津濃').replace('新北中纖','中纖')}</span>
                                                 </div>
-                                                <input 
-                                                    type="text" 
-                                                    placeholder="-" 
-                                                    className="w-10 h-8 text-center font-mono font-bold bg-gray-50 rounded-lg border-none outline-none focus:ring-2 focus:ring-pink-200 transition text-sm"
-                                                    value={score}
-                                                    onChange={(e) => onSaveData('scores', match.id, e.target.value)}
-                                                />
+                                                <input type="text" placeholder="-" className="w-10 h-8 text-center font-mono font-bold bg-gray-50 rounded-lg border-none outline-none focus:ring-2 transition text-sm" style={{focusRingColor: 'var(--theme-light)'}} value={score} onChange={(e) => onSaveData('scores', match.id, e.target.value)} />
                                             </div>
-
                                             <div className="flex flex-wrap gap-1.5 items-center">
-                                                {currentRoster.map(name => (
-                                                    <span key={name} className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${name === user ? 'bg-pink-500 text-white border-pink-500' : 'bg-white text-gray-500 border-gray-100'}`}>
-                                                        {name}
-                                                    </span>
-                                                ))}
-                                                <button onClick={() => setEditingMatchId(match.id)} className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200">
-                                                    <Icon name="Edit2" size={10} />
-                                                </button>
+                                                {currentRoster.map(name => (<span key={name} className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${name === user ? 'text-white' : 'bg-white text-gray-500 border-gray-100'}`} style={name === user ? {backgroundColor: 'var(--theme-color)', borderColor: 'var(--theme-color)'} : {}}>{name}</span>))}
+                                                <button onClick={() => setEditingMatchId(match.id)} className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200"><Icon name="Edit2" size={10} /></button>
                                             </div>
                                             {match.note && <div className="text-[10px] text-gray-400 mt-1 ml-1">* {match.note}</div>}
                                         </div>
@@ -877,151 +517,105 @@
                             </div>
                         ))}
                     </div>
-
-                    {isMyWeek && (
-                        <div className="p-4 pt-0">
-                            <button 
-                                onClick={() => setIsTripModalOpen(true)}
-                                className="w-full py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm shadow-lg shadow-gray-200 active:scale-95 transition-transform flex items-center justify-center gap-2"
-                            >
-                                <Icon name="Edit2" size={14} /> 填寫交通住宿
-                            </button>
-                        </div>
-                    )}
-
-                    <TripDetailModal 
-                        isOpen={isTripModalOpen}
-                        onClose={() => setIsTripModalOpen(false)}
-                        weekData={weekData}
-                        user={user}
-                        savedData={savedData}
-                        onSaveData={onSaveData}
-                    />
-
-                    {editingMatchId && (
-                        <RosterEditModal 
-                            isOpen={true}
-                            currentRoster={savedData.rosters?.[editingMatchId] || weekData.matches.find(m => m.id === editingMatchId).roster}
-                            onClose={() => setEditingMatchId(null)}
-                            onSave={(newRoster) => onSaveData('rosters', editingMatchId, newRoster)}
-                        />
-                    )}
+                    {isMyWeek && (<div className="p-4 pt-0"><button onClick={() => setIsTripModalOpen(true)} className="w-full py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm shadow-lg shadow-gray-200 active:scale-95 transition-transform flex items-center justify-center gap-2"><Icon name="Edit2" size={14} /> 填寫交通住宿</button></div>)}
+                    <TripDetailModal isOpen={isTripModalOpen} onClose={() => setIsTripModalOpen(false)} weekData={weekData} user={user} savedData={savedData} onSaveData={onSaveData} />
+                    {editingMatchId && (<RosterEditModal isOpen={true} currentRoster={savedData.rosters?.[editingMatchId] || weekData.matches.find(m => m.id === editingMatchId).roster} onClose={() => setEditingMatchId(null)} onSave={(newRoster) => onSaveData('rosters', editingMatchId, newRoster)} />)}
                 </div>
             );
         };
 
         const App = () => {
-            const [user, setUser] = useState(localStorage.getItem('powerme_user') || '');
+            const [user, setUser] = useState(safeGet('powerme_user') || '');
             const [showMyOnly, setShowMyOnly] = useState(false);
+            const [hidePast, setHidePast] = useState(safeGet('powerme_hide_past') === 'true');
+            const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+            const [themeId, setThemeId] = useState(safeGet('powerme_theme') || 'pink');
+            
             const [savedData, setSavedData] = useState(() => {
-                const saved = localStorage.getItem('powerme_data');
+                const saved = safeGet('powerme_data');
                 return saved ? JSON.parse(saved) : { scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {} };
             });
 
             useEffect(() => {
-                if (user) localStorage.setItem('powerme_user', user);
-                else localStorage.removeItem('powerme_user');
-            }, [user]);
+                const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
+                const root = document.documentElement;
+                root.style.setProperty('--theme-color', theme.color);
+                root.style.setProperty('--theme-light', theme.light);
+                root.style.setProperty('--theme-bg', theme.bg);
+                root.style.setProperty('--theme-fade', `${theme.color}20`);
+                safeSet('powerme_theme', themeId);
+            }, [themeId]);
 
-            useEffect(() => {
-                localStorage.setItem('powerme_data', JSON.stringify(savedData));
-            }, [savedData]);
+            useEffect(() => { if (user) safeSet('powerme_user', user); else safeRemove('powerme_user'); }, [user]);
+            useEffect(() => { safeSet('powerme_data', JSON.stringify(savedData)); }, [savedData]);
+            useEffect(() => { safeSet('powerme_hide_past', hidePast); }, [hidePast]);
 
-            const handleSaveData = (category, id, value) => {
-                setSavedData(prev => ({
-                    ...prev,
-                    [category]: {
-                        ...prev[category],
-                        [id]: value
-                    }
-                }));
-            };
+            const handleSaveData = (category, id, value) => { setSavedData(prev => ({ ...prev, [category]: { ...prev[category], [id]: value } })); };
+            const handleResetData = () => { setSavedData({ scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {} }); window.location.reload(); };
 
             const groupedSchedule = useMemo(() => {
                 const groups = {};
                 SCHEDULE.forEach(match => {
                     const key = match.week;
-                    if (!groups[key]) {
-                        groups[key] = {
-                            week: match.week,
-                            location: match.location,
-                            date: match.date,
-                            day: match.day,
-                            matches: []
-                        };
-                    }
-                    match.matches.forEach(m => {
-                        groups[key].matches.push({
-                            ...m,
-                            date: match.date,
-                            day: match.day
-                        });
-                    });
+                    if (!groups[key]) { groups[key] = { week: match.week, location: match.location, date: match.date, day: match.day, matches: [] }; }
+                    match.matches.forEach(m => { groups[key].matches.push({ ...m, date: match.date, day: match.day }); });
                 });
-                return Object.values(groups).sort((a, b) => a.week - b.week);
-            }, []);
+                let sorted = Object.values(groups).sort((a, b) => a.week - b.week);
+                
+                if (hidePast) {
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    sorted = sorted.filter(group => {
+                        const lastMatch = group.matches[group.matches.length - 1];
+                        const parts = lastMatch.date.split('/');
+                        const lastDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+                        return lastDate >= today;
+                    });
+                }
+                return sorted;
+            }, [hidePast]);
 
             if (!user) {
                 return (
                     <div className="min-h-screen relative overflow-hidden journal-bg flex flex-col items-center justify-center p-4">
-                        <div className="absolute top-10 left-10 text-pink-300 opacity-60 animate-float">
-                            <Icon name="Heart" size={40} />
-                        </div>
-                        <div className="absolute bottom-20 right-10 text-yellow-300 opacity-60 animate-float-delay">
-                            <Icon name="Star" size={40} />
-                        </div>
-                         <div className="absolute top-1/4 right-8 text-blue-200 opacity-60 animate-float" style={{animationDuration: '8s'}}>
-                            <div className="w-10 h-10 rounded-full border-4 border-current flex items-center justify-center">
-                                <div className="w-full h-0.5 bg-current transform rotate-45"></div>
-                                <div className="w-full h-0.5 bg-current transform -rotate-45 absolute"></div>
-                            </div>
-                        </div>
-
-                        <div className="relative bg-white px-6 pt-8 pb-8 rounded-[24px] w-full max-w-sm transform -rotate-2 border-2 border-pink-100 shadow-[6px_6px_0px_rgba(255,182,193,0.5)]">
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-28 h-6 bg-pink-300/80 rotate-1 shadow-sm" style={{maskImage: 'repeating-linear-gradient(135deg,black,black 10px,transparent 10px,transparent 20px)', WebkitMaskImage: 'repeating-linear-gradient(135deg,black,black 10px,transparent 10px,transparent 20px)'}}></div>
+                        <div className="absolute top-10 left-10 text-[var(--theme-light)] opacity-60 animate-float"><Icon name="Heart" size={40} /></div>
+                        <div className="absolute bottom-20 right-10 text-yellow-300 opacity-60 animate-float-delay"><Icon name="Star" size={40} /></div>
+                        <div className="relative bg-white px-6 pt-8 pb-8 rounded-[24px] w-full max-w-sm transform -rotate-2 border-2 border-[var(--theme-light)] shadow-[6px_6px_0px_rgba(0,0,0,0.05)]">
+                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-28 h-6 rotate-1 shadow-sm" style={{backgroundColor: 'var(--theme-light)', opacity: 0.8, maskImage: 'repeating-linear-gradient(135deg,black,black 10px,transparent 10px,transparent 20px)', WebkitMaskImage: 'repeating-linear-gradient(135deg,black,black 10px,transparent 10px,transparent 20px)'}}></div>
                             <div className="text-center mb-4 relative z-10">
                                 <div className="logo-sticker relative inline-block transform -rotate-3 hover:rotate-0 transition-transform duration-300 mb-1">
-                                    <div className="absolute inset-0 bg-white rounded-3xl transform scale-105 border-2 border-pink-100/50"></div>
-                                    <img src="./image_82155e.jpg" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400/FBCFE8/ffffff?text=Put+Image+Here"; }} alt="Powerme Girls Logo" className="w-48 h-auto relative rounded-2xl shadow-sm bg-white p-1" />
+                                    <div className="absolute inset-0 bg-white rounded-3xl transform scale-105 border-2 border-[var(--theme-light)]"></div>
+                                    <img src="./image_82155e.jpg" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400/FBCFE8/ffffff?text=Powerme+Girls"; }} alt="Logo" className="w-48 h-auto relative rounded-2xl shadow-sm bg-white p-1" />
                                 </div>
                                 <h2 className="text-xl font-bold text-gray-400 tracking-widest uppercase mt-1 font-mono">Powerme Girl's Pocket</h2>
-                                <div className="absolute -right-2 top-8 transform rotate-12"><Icon name="Sparkles" size={20} className="text-yellow-400" /></div>
                             </div>
-                            <p className="text-gray-500 mb-4 text-center text-xs font-bold bg-pink-50 inline-block px-3 py-1 rounded-full mx-auto block w-max">✨ 請點選妳的名字 ✨</p>
+                            <p className="text-gray-500 mb-4 text-center text-xs font-bold inline-block px-3 py-1 rounded-full mx-auto block w-max" style={{backgroundColor: 'var(--theme-bg)'}}>✨ 請點選妳的名字 ✨</p>
                             <div className="grid grid-cols-4 gap-3">
                                 {ALL_MEMBERS.map(name => (
-                                    <button key={name} onClick={() => setUser(name)} className="sticker-btn aspect-square rounded-full bg-pink-100 flex items-center justify-center font-bold text-gray-600 hover:bg-pink-400 hover:text-white hover:border-pink-200 text-xs relative group">
+                                    <button key={name} onClick={() => setUser(name)} className="sticker-btn aspect-square rounded-full flex items-center justify-center font-bold text-gray-600 hover:text-white text-xs relative group" style={{backgroundColor: 'var(--theme-bg)'}} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-color)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-bg)'}>
                                         <span className="relative z-10">{name}</span>
                                         <div className="absolute inset-0 rounded-full border-2 border-dashed border-white opacity-50"></div>
                                     </button>
                                 ))}
                             </div>
                         </div>
-                        <div className="mt-8 text-[10px] font-bold text-gray-400 tracking-wider flex items-center gap-1">
-                            <Icon name="Heart" size={10} /> TVL 21 年聯賽應援小工具 <Icon name="Heart" size={10} />
-                        </div>
+                        <div className="mt-8 text-[10px] font-bold text-gray-400 tracking-wider flex items-center gap-1"><Icon name="Heart" size={10} /> TVL 21 年聯賽應援小工具 <Icon name="Heart" size={10} /></div>
                     </div>
                 );
             }
 
             return (
-                <div className="max-w-md mx-auto min-h-screen pb-24 bg-[#FFF0F5] relative shadow-2xl">
-                    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md px-5 py-4 border-b border-pink-50 flex justify-between items-center washi-header">
+                <div className="max-w-md mx-auto min-h-screen pb-24 relative shadow-2xl bg-[var(--theme-bg)] transition-colors duration-500">
+                    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md px-5 py-4 border-b border-[var(--theme-light)] flex justify-between items-center washi-header">
                         <div>
-                            <h1 className="font-black text-pink-500 text-xl leading-none flex items-center gap-2 drop-shadow-sm">
-                                <Icon name="BookHeart" size={20} /> 
-                                <span>Powerme Girls</span>
-                                <span className="text-2xl transform rotate-12 inline-block ml-1">🎀</span>
+                            <h1 className="font-black text-xl leading-none flex items-center gap-2 drop-shadow-sm" style={{color: 'var(--theme-color)'}}>
+                                <Icon name="BookHeart" size={20} /> <span>Powerme Girls</span> <span className="text-2xl transform rotate-12 inline-block ml-1">🎀</span>
                             </h1>
                             <div className="text-[10px] text-gray-500 font-bold pl-6">Hi, {user}</div>
                         </div>
                         <div className="flex gap-2">
-                            <a href="https://tvl.ctvba.org.tw/schedule-mix" target="_blank" className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center hover:bg-pink-50 hover:text-pink-500 transition shadow-sm">
-                                <Icon name="BarChart2" size={20} />
-                            </a>
-                            <button onClick={() => setUser('')} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition shadow-sm">
-                                <Icon name="LogOut" size={20} />
-                            </button>
+                            <button onClick={() => setIsSettingsOpen(true)} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center transition shadow-sm hover:text-[var(--theme-color)] hover:bg-[var(--theme-bg)]"><Icon name="Settings" size={20} /></button>
+                            <button onClick={() => setUser('')} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition shadow-sm"><Icon name="LogOut" size={20} /></button>
                         </div>
                     </header>
 
@@ -1030,39 +624,30 @@
                             <h2 className="text-2xl font-black text-gray-800">Schedule</h2>
                             <div className="relative inline-block w-28 align-middle select-none transition duration-200 ease-in">
                                 <input type="checkbox" name="toggle" id="toggle" className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-1 top-1" checked={showMyOnly} onChange={() => setShowMyOnly(!showMyOnly)}/>
-                                <label htmlFor="toggle" className={`toggle-label block overflow-hidden h-8 rounded-full cursor-pointer border-2 font-bold text-[10px] leading-7 px-2 transition-colors duration-300 text-center ${showMyOnly ? 'bg-pink-500 border-pink-500 text-white pl-2 text-left' : 'bg-gray-200 border-gray-200 text-gray-400 pl-8 text-right'}`}>
-                                    {showMyOnly ? '只看我的' : '顯示全部'}
-                                </label>
+                                <label htmlFor="toggle" className={`toggle-label block overflow-hidden h-8 rounded-full cursor-pointer border-2 font-bold text-[10px] leading-7 px-2 transition-colors duration-300 text-center ${showMyOnly ? 'text-white pl-2 text-left' : 'bg-gray-200 border-gray-200 text-gray-400 pl-8 text-right'}`} style={showMyOnly ? {backgroundColor: 'var(--theme-color)', borderColor: 'var(--theme-color)'} : {}}> {showMyOnly ? '只看我的' : '顯示全部'} </label>
                             </div>
                         </div>
                     </div>
 
                     <main className="p-5 pt-2 space-y-2">
-                        {groupedSchedule
-                            .filter(weekData => {
-                                if (!showMyOnly) return true;
-                                return weekData.matches.some(m => {
-                                    const roster = savedData.rosters?.[m.id] || m.roster;
-                                    return roster.includes(user);
-                                });
-                            })
-                            .map((weekData) => (
-                                <WeekCard 
-                                    key={weekData.week} 
-                                    weekData={weekData} 
-                                    user={user}
-                                    savedData={savedData}
-                                    onSaveData={handleSaveData}
-                                />
-                            ))
-                        }
-                        {groupedSchedule.filter(w => showMyOnly && !w.matches.some(m => (savedData.rosters?.[m.id] || m.roster).includes(user))).length === groupedSchedule.length && showMyOnly && (
-                            <div className="text-center py-20 text-gray-400 font-bold">
-                                <div className="text-4xl mb-2">😴</div>
-                                目前沒有妳的班表喔！
-                            </div>
+                        {groupedSchedule.filter(weekData => !showMyOnly || weekData.matches.some(m => (savedData.rosters?.[m.id] || m.roster).includes(user))).map((weekData) => (
+                            <WeekCard key={weekData.week} weekData={weekData} user={user} savedData={savedData} onSaveData={handleSaveData} />
+                        ))}
+                        {groupedSchedule.length === 0 && <div className="text-center py-20 text-gray-400 font-bold"><div className="text-4xl mb-2">🍃</div> 沒有更多賽程囉！</div>}
+                        {groupedSchedule.length > 0 && groupedSchedule.filter(w => !showMyOnly || w.matches.some(m => (savedData.rosters?.[m.id] || m.roster).includes(user))).length === 0 && (
+                            <div className="text-center py-20 text-gray-400 font-bold"><div className="text-4xl mb-2">😴</div> 目前沒有妳的班表喔！</div>
                         )}
                     </main>
+
+                    <SettingsModal 
+                        isOpen={isSettingsOpen} 
+                        onClose={() => setIsSettingsOpen(false)} 
+                        currentThemeId={themeId}
+                        onThemeChange={setThemeId}
+                        hidePast={hidePast}
+                        onToggleHidePast={() => setHidePast(!hidePast)}
+                        onResetData={handleResetData}
+                    />
                 </div>
             );
         };
