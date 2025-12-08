@@ -17,132 +17,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS Variables */
-        :root {
-            --theme-color: #EC4899;
-            --theme-light: #FBCFE8;
-            --theme-bg: #FFF0F5;
-            --theme-fade: rgba(236, 72, 153, 0.1);
-        }
-
-        body {
-            font-family: 'Zen Maru Gothic', sans-serif;
-            background-color: var(--theme-bg);
-            color: #4A4A4A;
-            -webkit-tap-highlight-color: transparent;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            transition: background-color 0.3s ease;
-        }
-        
+        :root { --theme-color: #EC4899; --theme-light: #FBCFE8; --theme-bg: #FFF0F5; --theme-fade: rgba(236, 72, 153, 0.1); }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background-color: var(--theme-bg); color: #4A4A4A; -webkit-tap-highlight-color: transparent; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); transition: background-color 0.3s ease; }
         .font-ticket { font-family: 'Space Mono', monospace; }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--theme-light); border-radius: 10px; }
-
-        .washi-header {
-            background-color: rgba(255, 255, 255, 0.95);
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, var(--theme-fade) 10px, var(--theme-fade) 20px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-bottom: 1px solid var(--theme-light);
-        }
-
-        /* Cute Inputs */
-        .cute-input {
-            border: 2px solid var(--theme-light);
-            border-radius: 16px;
-            padding: 10px 14px;
-            outline: none;
-            transition: all 0.2s;
-            background: #FFF;
-            font-size: 14px;
-            width: 100%;
-        }
+        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--theme-light); border-radius: 10px; }
+        .washi-header { background-color: rgba(255, 255, 255, 0.95); background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, var(--theme-fade) 10px, var(--theme-fade) 20px); box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-bottom: 1px solid var(--theme-light); }
+        .toggle-checkbox:checked { right: 0; border-color: var(--theme-color); } .toggle-checkbox:checked + .toggle-label { background-color: var(--theme-color); }
+        .cute-input { border: 2px solid var(--theme-light); border-radius: 16px; padding: 10px 14px; outline: none; transition: all 0.2s; background: #FFF; font-size: 14px; width: 100%; }
         .cute-input:focus { border-color: var(--theme-color); box-shadow: 0 0 0 3px var(--theme-fade); }
-
-        /* Japanese Ticket Style */
-        .jp-ticket {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px var(--theme-fade);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #FEE2E2;
-        }
-        .jp-ticket::before, .jp-ticket::after {
-            content: ""; position: absolute; top: 54%; width: 24px; height: 24px;
-            background-color: #FAFAFA; border-radius: 50%; z-index: 10;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none;
-        }
-        .jp-ticket::before { left: -12px; }
-        .jp-ticket::after { right: -12px; }
-
-        .jp-ticket-header {
-            background: var(--theme-color);
-            background-image: radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%), radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%);
-            background-size: 10px 10px; background-position: 0 0, 5px 5px;
-            color: white; padding: 8px 16px; font-size: 12px; font-weight: 900; letter-spacing: 2px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px dashed rgba(255,255,255,0.5);
-        }
+        .dashed-line { background-image: linear-gradient(to right, var(--theme-light) 50%, rgba(255,255,255,0) 0%); background-position: bottom; background-size: 10px 2px; background-repeat: repeat-x; height: 2px; }
+        .jp-ticket { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px var(--theme-fade); position: relative; overflow: hidden; border: 1px solid #FEE2E2; }
+        .jp-ticket::before, .jp-ticket::after { content: ""; position: absolute; top: 54%; width: 24px; height: 24px; background-color: #FAFAFA; border-radius: 50%; z-index: 10; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none; }
+        .jp-ticket::before { left: -12px; } .jp-ticket::after { right: -12px; }
+        .jp-ticket-header { background: var(--theme-color); background-image: radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%), radial-gradient(rgba(255,255,255,0.3) 15%, transparent 16%); background-size: 10px 10px; background-position: 0 0, 5px 5px; color: white; padding: 8px 16px; font-size: 12px; font-weight: 900; letter-spacing: 2px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed rgba(255,255,255,0.5); }
         .jp-ticket-body { padding: 16px 20px; position: relative; z-index: 20; }
-
-        .ticket-input {
-            width: 100%; text-align: center; background: transparent;
-            border-bottom: 2px solid #F3F4F6; border-radius: 0; padding: 4px 0;
-            font-family: 'Space Mono', monospace; font-weight: 700; color: #374151;
-            outline: none; transition: border-color 0.3s; position: relative; z-index: 30;
-        }
+        .ticket-input { width: 100%; text-align: center; background: transparent; border-bottom: 2px solid #F3F4F6; border-radius: 0; padding: 4px 0; font-family: 'Space Mono', monospace; font-weight: 700; color: #374151; outline: none; transition: border-color 0.3s; position: relative; z-index: 30; }
         .ticket-input:focus { border-bottom-color: var(--theme-color); }
-
-        .time-select {
-            appearance: none; background: transparent; font-family: 'Space Mono', monospace;
-            font-weight: 700; color: #374151; border: none; border-bottom: 2px solid #F3F4F6;
-            border-radius: 0; text-align: center; padding: 2px 0; outline: none; width: 100%;
-        }
+        .time-select { appearance: none; background: transparent; font-family: 'Space Mono', monospace; font-weight: 700; color: #374151; border: none; border-bottom: 2px solid #F3F4F6; border-radius: 0; text-align: center; padding: 2px 0; outline: none; width: 100%; }
         .time-select:focus { border-bottom-color: var(--theme-color); }
-
-        /* Stamp Button */
-        .stamp-btn {
-            border: 2px solid #E5E7EB; color: #9CA3AF; border-radius: 8px; padding: 6px 10px;
-            font-size: 11px; font-weight: bold; transition: all 0.2s; position: relative; background: #F9FAFB; z-index: 30;
-        }
-        .stamp-btn.active {
-            border-color: var(--theme-color); color: var(--theme-color); background: rgba(255,255,255,0.8);
-            box-shadow: 0 0 0 2px var(--theme-fade); transform: rotate(-3deg) scale(1.05);
-        }
-        .stamp-btn.active::after {
-            content: "済"; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px;
-            background: var(--theme-color); color: white; font-size: 10px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Toggle Switch */
-        .toggle-checkbox:checked { right: 0; border-color: var(--theme-color); }
-        .toggle-checkbox:checked + .toggle-label { background-color: var(--theme-color); }
-
-        /* Color Swatch */
-        .color-swatch {
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-            border: 3px solid transparent; transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .stamp-btn { border: 2px solid #E5E7EB; color: #9CA3AF; border-radius: 8px; padding: 6px 4px; font-size: 10px; font-weight: bold; transition: all 0.2s; position: relative; background: #F9FAFB; z-index: 30; }
+        .stamp-btn.active { border-color: var(--theme-color); color: var(--theme-color); background: rgba(255,255,255,0.8); box-shadow: 0 0 0 2px var(--theme-fade); transform: rotate(-3deg) scale(1.05); }
+        .stamp-btn.active::after { content: "✔"; position: absolute; top: -6px; right: -6px; width: 14px; height: 14px; background: var(--theme-color); color: white; font-size: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .seat-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: bold; border-radius: 8px; border: 2px solid #E5E7EB; color: #9CA3AF; transition: all 0.2s; background: #F9FAFB; }
+        .seat-btn.selected { border-color: var(--theme-color); color: white; background: var(--theme-color); box-shadow: 0 2px 5px var(--theme-fade); }
+        .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
         .color-swatch.selected { border-color: #4B5563; transform: scale(1.1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-
-        /* Animations */
         @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-5px) rotate(2deg); } 100% { transform: translateY(0px) rotate(0deg); } }
         .animate-float { animation: float 4s ease-in-out infinite; }
         .logo-sticker { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s ease; }
         .logo-sticker:hover { transform: scale(1.05) rotate(2deg); }
         .sticker-btn { border: 3px solid white; box-shadow: 2px 3px 0px rgba(0,0,0,0.1); transition: all 0.2s; }
         .sticker-btn:active { transform: translateY(2px); box-shadow: none; }
-        .dashed-line { background-image: linear-gradient(to right, var(--theme-light) 50%, rgba(255,255,255,0) 0%); background-position: bottom; background-size: 10px 2px; background-repeat: repeat-x; height: 2px; }
-
+        
+        #safe-reset-btn { position: fixed; top: 10px; right: 10px; z-index: 999999; background-color: #EF4444; color: white; border: 2px solid white; padding: 8px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; opacity: 0.8; transition: opacity 0.3s; display: none; } /* Hidden by default */
     </style>
 </head>
 <body>
+    <button id="safe-reset-btn" onclick="if(confirm('如果畫面卡住或全白，按這個可以重置資料修復。確定要重置嗎？')){localStorage.clear();window.location.reload();}">🚑 救命按鈕</button>
+
     <div id="root">
         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
             <div style="font-size: 60px; animation: bounce 1s infinite;">🏐</div>
@@ -152,17 +64,23 @@
     </div>
 
     <script>
+        // Show rescue button only if loading takes too long
+        setTimeout(function(){
+            var btn = document.getElementById('safe-reset-btn');
+            if(btn) btn.style.display = 'block';
+        }, 3000);
+        
         window.onerror = function(message, source, lineno, colno, error) {
             if(!message.includes("ResizeObserver")) {
-                alert("載入發生錯誤 (Error): " + message + "\n請截圖告知開發者");
+               console.error("Error: " + message);
+               document.getElementById('safe-reset-btn').style.display = 'block';
             }
         };
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useCallback } = React;
 
-        // --- CONSTANTS & HELPERS ---
         const THEMES = [
             { id: 'pink', name: '甜心粉', color: '#EC4899', light: '#FBCFE8', bg: '#FFF0F5' },
             { id: 'blue', name: '應援藍', color: '#0EA5E9', light: '#BAE6FD', bg: '#F0F9FF' },
@@ -171,10 +89,6 @@
             { id: 'green', name: '清新綠', color: '#10B981', light: '#A7F3D0', bg: '#ECFDF5' },
         ];
 
-        const ALL_MEMBERS = ["詠嫺", "凌襄", "昕蓉", "叮叮", "智智", "汶霖", "藍心", "宥心", "芝芝", "郁倪", "時雨", "葳柔"];
-        const STATIONS = ["南港", "台北", "板橋", "桃園", "新竹", "苗栗", "台中", "彰化", "雲林", "嘉義", "台南", "左營"];
-
-        // SVG Path Data (Global to avoid re-render issues)
         const ICON_PATHS = {
             X: <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
             Train: <><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/></>,
@@ -196,7 +110,9 @@
             Navigation: <polygon points="3 11 22 2 13 21 11 13 3 11"/>,
             QrCode: <><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></>,
             Settings: <><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></>,
-            Trash: <><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></>
+            Trash: <><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></>,
+            Notebook: <><path d="M16 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></>,
+            Wallet: <><rect width="18" height="12" x="2" y="5" rx="2"/><path d="M6 5v14"/><path d="M18 5v14"/><line x1="2" x2="20" y1="9" y2="9"/></>
         };
 
         const Icon = ({ name, size = 24, className = "" }) => (
@@ -205,12 +121,53 @@
             </svg>
         );
 
-        // --- SAFE STORAGE ---
+        // --- FARE MATRIX (2025 Standard Prices) ---
+        // Indices: Nangang, Taipei, Banqiao, Taoyuan, Hsinchu, Miaoli, Taichung, Changhua, Yunlin, Chiayi, Tainan, Zuoying
+        const STATIONS = ["南港", "台北", "板橋", "桃園", "新竹", "苗栗", "台中", "彰化", "雲林", "嘉義", "台南", "左營"];
+        const FARE_DATA = {
+            "reserved": [
+                [0, 40, 70, 200, 330, 480, 750, 870, 970, 1120, 1390, 1530], // Nangang
+                [40, 0, 40, 160, 290, 430, 700, 820, 930, 1080, 1350, 1490], // Taipei
+                [70, 40, 0, 130, 260, 400, 670, 790, 900, 1050, 1320, 1460], // Banqiao
+                [200, 160, 130, 0, 130, 280, 540, 670, 780, 920, 1190, 1330], // Taoyuan
+                [330, 290, 260, 130, 0, 140, 410, 540, 640, 790, 1060, 1200], // Hsinchu
+                [480, 430, 400, 280, 140, 0, 270, 390, 500, 640, 920, 1060], // Miaoli
+                [750, 700, 670, 540, 410, 270, 0, 130, 230, 380, 650, 790], // Taichung
+                [870, 820, 790, 670, 540, 390, 130, 0, 110, 250, 530, 670], // Changhua
+                [970, 930, 900, 780, 640, 500, 230, 110, 0, 150, 420, 560], // Yunlin
+                [1120, 1080, 1050, 920, 790, 640, 380, 250, 150, 0, 280, 410], // Chiayi
+                [1390, 1350, 1320, 1190, 1060, 920, 650, 530, 420, 280, 0, 140], // Tainan
+                [1530, 1490, 1460, 1330, 1200, 1060, 790, 670, 560, 410, 140, 0]  // Zuoying
+            ],
+            "free": [
+                [0, 35, 65, 190, 320, 465, 725, 840, 940, 1085, 1345, 1480],
+                [35, 0, 35, 155, 280, 415, 675, 795, 900, 1045, 1305, 1445],
+                [65, 35, 0, 125, 250, 385, 645, 765, 870, 1015, 1280, 1415],
+                [190, 155, 125, 0, 125, 270, 520, 645, 755, 890, 1150, 1290],
+                [320, 280, 250, 125, 0, 135, 395, 520, 620, 765, 1025, 1160],
+                [465, 415, 385, 270, 135, 0, 260, 375, 485, 620, 890, 1025],
+                [725, 675, 645, 520, 395, 260, 0, 125, 220, 365, 630, 765],
+                [840, 795, 765, 645, 520, 375, 125, 0, 105, 240, 510, 645],
+                [940, 900, 870, 755, 620, 485, 220, 105, 0, 145, 405, 540],
+                [1085, 1045, 1015, 890, 765, 620, 365, 240, 145, 0, 270, 395],
+                [1345, 1305, 1280, 1150, 1025, 890, 630, 510, 405, 270, 0, 135],
+                [1480, 1445, 1415, 1290, 1160, 1025, 765, 645, 540, 395, 135, 0]
+            ]
+        };
+
+        const getTicketPrice = (from, to, type) => {
+            const idx1 = STATIONS.indexOf(from);
+            const idx2 = STATIONS.indexOf(to);
+            if (idx1 === -1 || idx2 === -1 || idx1 === idx2) return 0;
+            const table = type === '自由座' ? FARE_DATA.free : FARE_DATA.reserved;
+            return table[idx1][idx2] || 0;
+        };
+
         const safeGet = (key) => { try { return localStorage.getItem(key); } catch(e) { return null; } };
         const safeSet = (key, val) => { try { localStorage.setItem(key, val); } catch(e) {} };
         const safeRemove = (key) => { try { localStorage.removeItem(key); } catch(e) {} };
 
-        // --- SCHEDULE DATA ---
+        const ALL_MEMBERS = ["詠嫺", "凌襄", "昕蓉", "叮叮", "智智", "汶霖", "藍心", "宥心", "芝芝", "郁倪", "時雨", "葳柔"];
         const SCHEDULE = [
             { week: 1, location: "成大體育館", date: "2025/11/01", day: "六", matches: [ { id: "w1m1", time: "13:00", team: "新北中纖", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] }, { id: "w1m2", time: "18:30", team: "雲林美津濃", roster: ["詠嫺", "凌襄", "昕蓉", "叮叮"] } ]},
             { week: 3, location: "彰師大體育館", date: "2025/11/15", day: "六", matches: [ { id: "w3m1", time: "14:00", team: "雲林美津濃", roster: ["智智", "汶霖", "藍心", "宥心"] }, { id: "w3m2", time: "18:00", team: "新北中纖", roster: ["智智", "汶霖", "藍心", "宥心"] } ]},
@@ -249,14 +206,10 @@
             { week: 20, location: "屏東縣立體育館", date: "2026/03/22", day: "日", matches: [ { id: "w20m3", time: "15:00", team: "女子組賽事", roster: [] }, { id: "w20m4", time: "17:00", team: "男子組賽事", roster: [] } ]}
         ];
 
-        const WeatherWidget = ({ location, date }) => {
+        const WeatherWidget = ({ location }) => {
             const temp = location.includes('屏東') || location.includes('高雄') ? '22-26°C' : '18-22°C';
-            const handleClick = () => {
-                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) { window.location.href = 'weather://'; } 
-                else { window.open(`https://www.google.com/search?q=${location}+天氣`, '_blank'); }
-            };
             return (
-                <div onClick={handleClick} className="bg-sky-50 border border-sky-100 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm cursor-pointer">
+                <div onClick={() => window.open(`https://www.google.com/search?q=${location}+天氣`, '_blank')} className="bg-sky-50 border border-sky-100 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm cursor-pointer">
                     <Icon name="Sun" size={20} className="text-orange-400" />
                     <div><div className="text-xs font-bold text-gray-600 leading-none">{temp}</div><div className="text-[9px] text-gray-400 font-medium leading-none mt-0.5">晴時多雲</div></div>
                 </div>
@@ -278,13 +231,33 @@
             );
         };
 
+        const MemoCard = ({ memo, onUpdate }) => (
+            <div className="bg-white border-2 border-dashed border-[var(--theme-light)] rounded-2xl p-4 mt-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-[var(--theme-light)] opacity-50"></div>
+                <div className="flex items-center gap-2 mb-2 text-gray-500 font-bold text-sm">
+                    <Icon name="Notebook" size={16} className="text-[var(--theme-color)]"/><span>MEMO 備忘錄</span>
+                </div>
+                <textarea className="w-full bg-[var(--theme-bg)] rounded-xl p-3 text-sm text-gray-700 outline-none resize-none focus:ring-2 focus:ring-[var(--theme-light)] transition" rows="4" placeholder="例如：記得帶化妝包、要在車站買飯..." value={memo || ''} onChange={(e) => onUpdate(e.target.value)}></textarea>
+                <div className="absolute bottom-2 right-2 text-[10px] text-[var(--theme-color)] font-bold opacity-50">POWERME</div>
+            </div>
+        );
+
         const HSRTicket = ({ transport, onUpdate }) => {
-            const { type, trainNo, from, to, paymentStatus, customText, departTime, arriveTime } = transport || {};
-            const updateField = (field, value) => { onUpdate({ ...transport, [field]: value }); };
+            const { type, from, to, paymentStatus, customText, departTime, arriveTime, price, seatType } = transport || {};
+            
+            const updateField = (field, value) => {
+                const newData = { ...transport, [field]: value };
+                // Auto calculate price if possible
+                if ((field === 'from' || field === 'to' || field === 'seatType') && newData.from && newData.to && newData.seatType) {
+                    const newPrice = getTicketPrice(newData.from, newData.to, newData.seatType);
+                    if(newPrice) newData.price = newPrice;
+                }
+                onUpdate(newData); 
+            };
 
             if (!type) return (
                 <div className="flex gap-2 mt-2">
-                    <button onClick={() => onUpdate({type: 'HSR'})} className="flex-1 text-[var(--theme-color)] rounded-lg p-2 text-sm font-bold border border-[var(--theme-light)] hover:bg-[var(--theme-bg)] transition" style={{backgroundColor: 'var(--theme-bg)'}}>🚄 高鐵</button>
+                    <button onClick={() => onUpdate({type: 'HSR', seatType: '對號座'})} className="flex-1 text-[var(--theme-color)] rounded-lg p-2 text-sm font-bold border border-[var(--theme-light)] hover:bg-[var(--theme-bg)] transition" style={{backgroundColor: 'var(--theme-bg)'}}>🚄 高鐵</button>
                     <button onClick={() => onUpdate({type: 'SELF'})} className="flex-1 bg-gray-100 text-gray-600 rounded-lg p-2 text-sm font-bold border border-gray-200 hover:bg-gray-200 transition">🚗 自理</button>
                 </div>
             );
@@ -299,45 +272,41 @@
 
             return (
                 <div className="mt-4 jp-ticket">
-                    <div className="jp-ticket-header">
-                        <span className="flex items-center gap-1.5"><Icon name="Train" size={16}/> HSR TICKET</span>
-                        <span className="text-[10px] opacity-80">NO. {trainNo || '000'}</span>
-                    </div>
+                    <div className="jp-ticket-header"><span className="flex items-center gap-1.5"><Icon name="Train" size={16}/> HSR TICKET</span><span className="text-[10px] opacity-80 font-mono">2025</span></div>
                     <div className="jp-ticket-body">
                         <button onClick={() => onUpdate(null)} className="absolute top-2 right-2 text-gray-300 hover:text-red-400 z-20 bg-white rounded-full"><Icon name="X" size={16}/></button>
+                        
                         <div className="flex items-center justify-between mb-4 px-2">
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={from || ''} onChange={(e) => updateField('from', e.target.value)}>
-                                <option value="">Start</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
-                            <div className="flex flex-col items-center">
-                                <Icon name="ArrowRight" className="text-[var(--theme-light)]" size={20} />
-                                <div className="text-[9px] font-bold text-gray-300 tracking-widest mt-1">TO</div>
-                            </div>
-                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={to || ''} onChange={(e) => updateField('to', e.target.value)}>
-                                <option value="">End</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={from || ''} onChange={(e) => updateField('from', e.target.value)}><option value="">Start</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}</select>
+                            <div className="flex flex-col items-center"><Icon name="ArrowRight" className="text-[var(--theme-light)]" size={20} /><div className="text-[9px] font-bold text-gray-300 tracking-widest mt-1">TO</div></div>
+                            <select className="bg-transparent font-black text-2xl outline-none w-24 text-right text-gray-700 appearance-none cursor-pointer hover:text-[var(--theme-color)] transition relative z-30" value={to || ''} onChange={(e) => updateField('to', e.target.value)}><option value="">End</option>{STATIONS.map(s => <option key={s} value={s}>{s}</option>)}</select>
                         </div>
+                        
                         <div className="border-t-2 border-dashed border-gray-200 mb-4 -mx-5"></div>
+                        
                         <div className="space-y-4 mb-4">
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">TRAIN NO.</label>
-                                <input type="text" inputMode="numeric" pattern="[0-9]*" className="ticket-input text-xl w-full text-left pl-2 relative z-20" placeholder="000" value={trainNo || ''} onChange={(e) => updateField('trainNo', e.target.value)} />
+                            {/* Seat Type Selector */}
+                            <div className="flex gap-2">
+                                {['對號座', '自由座'].map(type => (
+                                    <button key={type} onClick={() => updateField('seatType', type)} className={`seat-btn ${seatType === type ? 'selected' : ''}`}>{type}</button>
+                                ))}
                             </div>
+
                             <div className="flex items-center justify-between gap-4">
-                                <div className="flex-1 min-w-0">
-                                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label>
-                                    <TimeSelector value={departTime} onChange={(val) => updateField('departTime', val)} />
-                                </div>
+                                <div className="flex-1 min-w-0"><label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">DEP 時間</label><TimeSelector value={departTime} onChange={(val) => updateField('departTime', val)} /></div>
                                 <div className="text-gray-300 pt-4">➤</div>
-                                <div className="flex-1 min-w-0">
-                                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">ARR 時間</label>
-                                    <TimeSelector value={arriveTime} onChange={(val) => updateField('arriveTime', val)} />
-                                </div>
+                                <div className="flex-1 min-w-0"><label className="text-[9px] font-bold text-gray-400 uppercase tracking-wide block mb-1">ARR 時間</label><TimeSelector value={arriveTime} onChange={(val) => updateField('arriveTime', val)} /></div>
                             </div>
                         </div>
+
+                        <div className="flex items-center gap-2 mb-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                            <span className="text-sm font-bold text-gray-400">票價 $</span>
+                            <input type="number" inputMode="numeric" placeholder="0" className="bg-transparent font-mono font-bold text-lg text-gray-700 outline-none w-full" value={price || ''} onChange={(e) => updateField('price', e.target.value)} />
+                        </div>
+
                         <div className="flex items-end justify-between pt-2">
                             <div className="flex gap-2">
-                                {['公司付款', '已請款', '未請款'].map((status) => (
+                                {['未請款', '已請款', '公司付款'].map((status) => (
                                     <button key={status} onClick={() => updateField('paymentStatus', status)} className={`stamp-btn ${paymentStatus === status ? 'active' : ''}`}>{status}</button>
                                 ))}
                             </div>
@@ -369,6 +338,86 @@
                                 <Icon name="Navigation" size={14} /> 導航
                             </a>
                         </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ExpenseModal = ({ isOpen, onClose, data = {} }) => {
+            if (!isOpen) return null;
+            
+            const stats = { '未請款': {count:0, amount:0}, '已請款': {count:0, amount:0}, '公司付款': {count:0, amount:0} };
+            const details = [];
+
+            if (data) {
+                Object.entries(data).forEach(([key, val]) => {
+                    if (!val || val.type !== 'HSR') return;
+                    const status = val.paymentStatus || '未請款';
+                    const price = parseInt(val.price || 0);
+                    if (stats[status]) {
+                        stats[status].count += 1;
+                        stats[status].amount += price;
+                    }
+                    const [_, weekStr, dir] = key.split('_');
+                    details.push({ 
+                        id: key, 
+                        week: weekStr, 
+                        dir: dir === 'out' ? '去程' : '回程',
+                        status, 
+                        price,
+                        info: `${val.from || '?'} → ${val.to || '?'}`
+                    });
+                });
+            }
+
+            details.sort((a, b) => parseInt(a.week) - parseInt(b.week));
+
+            return (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pointer-events-auto" onClick={onClose}>
+                    <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                        <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-6 sm:hidden"></div>
+                        <h3 className="text-xl font-bold text-center text-gray-800 mb-6 flex items-center justify-center gap-2"><Icon name="Wallet" size={24}/> 車票帳本</h3>
+                        
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                            <div className="bg-rose-50 border border-rose-100 p-3 rounded-xl text-center">
+                                <div className="text-[10px] font-bold text-rose-400 mb-1">🔴 待請款</div>
+                                <div className="text-lg font-black text-rose-600">${stats['未請款'].amount}</div>
+                                <div className="text-[9px] text-rose-300">{stats['未請款'].count} 張</div>
+                            </div>
+                            <div className="bg-amber-50 border border-amber-100 p-3 rounded-xl text-center">
+                                <div className="text-[10px] font-bold text-amber-400 mb-1">🟡 已請款</div>
+                                <div className="text-lg font-black text-amber-600">${stats['已請款'].amount}</div>
+                                <div className="text-[9px] text-amber-300">{stats['已請款'].count} 張</div>
+                            </div>
+                            <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-xl text-center">
+                                <div className="text-[10px] font-bold text-emerald-400 mb-1">🏢 公司付</div>
+                                <div className="text-lg font-black text-emerald-600">${stats['公司付款'].amount}</div>
+                                <div className="text-[9px] text-emerald-300">{stats['公司付款'].count} 張</div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">明細清單</h4>
+                            {details.length === 0 ? (
+                                <div className="text-center py-8 text-gray-400 text-sm">還沒有車票紀錄喔 😴</div>
+                            ) : details.map((item) => (
+                                <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="flex items-center gap-3">
+                                        <div className="bg-white w-10 h-10 rounded-lg flex flex-col items-center justify-center border border-gray-100 text-xs font-bold text-gray-500 shadow-sm">
+                                            <span>W{item.week}</span>
+                                            <span className="text-[8px] text-gray-300">{item.dir}</span>
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-bold text-gray-700">{item.info}</div>
+                                            <div className={`text-[10px] font-bold px-1.5 py-0.5 rounded inline-block mt-0.5 ${item.status === '未請款' ? 'bg-rose-100 text-rose-500' : item.status === '已請款' ? 'bg-amber-100 text-amber-500' : 'bg-emerald-100 text-emerald-500'}`}>{item.status}</div>
+                                        </div>
+                                    </div>
+                                    <div className="font-mono font-bold text-gray-700">${item.price}</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <button onClick={onClose} className="w-full py-3 rounded-xl bg-gray-900 text-white font-bold shadow-lg hover:bg-gray-800 transition mt-6">關閉</button>
                     </div>
                 </div>
             );
@@ -448,6 +497,8 @@
             const transportOut = savedData.transport?.[`${weekId}_out`];
             const transportIn = savedData.transport?.[`${weekId}_in`];
             const accommodation = savedData.accommodation?.[weekId];
+            const memo = savedData.memos?.[weekId];
+
             return (
                 <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center pointer-events-none">
                     <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] pointer-events-auto transition-opacity" onClick={onClose}></div>
@@ -463,6 +514,7 @@
                             <div><h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center">Go</div> 去程交通</h4><HSRTicket transport={transportOut} onUpdate={(d) => onSaveData('transport', `${weekId}_out`, d)} /></div>
                             <div><h4 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center">Back</div> 回程交通</h4><HSRTicket transport={transportIn} onUpdate={(d) => onSaveData('transport', `${weekId}_in`, d)} /></div>
                         </div>
+                        <MemoCard memo={memo} onUpdate={(val) => onSaveData('memos', weekId, val)} />
                         <div className="h-20"></div>
                     </div>
                     <div className="absolute bottom-6 left-0 right-0 px-6 pointer-events-none">
@@ -529,11 +581,22 @@
             const [showMyOnly, setShowMyOnly] = useState(false);
             const [hidePast, setHidePast] = useState(safeGet('powerme_hide_past') === 'true');
             const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+            const [isExpenseOpen, setIsExpenseOpen] = useState(false);
             const [themeId, setThemeId] = useState(safeGet('powerme_theme') || 'pink');
             
+            // --- AUTO REPAIR DATA ON LOAD ---
             const [savedData, setSavedData] = useState(() => {
-                const saved = safeGet('powerme_data');
-                return saved ? JSON.parse(saved) : { scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {} };
+                const DEFAULT_DATA = { scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {}, memos: {} };
+                try {
+                    const local = safeGet('powerme_data');
+                    if (!local) return DEFAULT_DATA;
+                    const parsed = JSON.parse(local);
+                    // MERGE to ensure all new keys exist
+                    return { ...DEFAULT_DATA, ...parsed };
+                } catch(e) {
+                    console.error("Data corrupted, resetting to default");
+                    return DEFAULT_DATA;
+                }
             });
 
             useEffect(() => {
@@ -550,8 +613,14 @@
             useEffect(() => { safeSet('powerme_data', JSON.stringify(savedData)); }, [savedData]);
             useEffect(() => { safeSet('powerme_hide_past', hidePast); }, [hidePast]);
 
-            const handleSaveData = (category, id, value) => { setSavedData(prev => ({ ...prev, [category]: { ...prev[category], [id]: value } })); };
-            const handleResetData = () => { setSavedData({ scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {} }); window.location.reload(); };
+            const handleSaveData = (category, id, value) => { 
+                setSavedData(prev => {
+                    // Safety check for category existence
+                    const catData = prev[category] || {};
+                    return { ...prev, [category]: { ...catData, [id]: value } };
+                }); 
+            };
+            const handleResetData = () => { setSavedData({ scores: {}, rosters: {}, transport: {}, accommodation: {}, roommates: {}, memos: {} }); window.location.reload(); };
 
             const groupedSchedule = useMemo(() => {
                 const groups = {};
@@ -568,8 +637,8 @@
                     sorted = sorted.filter(group => {
                         const lastMatch = group.matches[group.matches.length - 1];
                         const parts = lastMatch.date.split('/');
-                        const lastDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-                        return lastDate >= today;
+                        const lastDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]), 23, 59, 59);
+                        return lastDate >= today; 
                     });
                 }
                 return sorted;
@@ -614,6 +683,7 @@
                             <div className="text-[10px] text-gray-500 font-bold pl-6">Hi, {user}</div>
                         </div>
                         <div className="flex gap-2">
+                            <button onClick={() => setIsExpenseOpen(true)} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center transition shadow-sm hover:text-[var(--theme-color)] hover:bg-[var(--theme-bg)]"><Icon name="Wallet" size={20} /></button>
                             <button onClick={() => setIsSettingsOpen(true)} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center transition shadow-sm hover:text-[var(--theme-color)] hover:bg-[var(--theme-bg)]"><Icon name="Settings" size={20} /></button>
                             <button onClick={() => setUser('')} className="w-10 h-10 bg-white rounded-full text-gray-400 border border-gray-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition shadow-sm"><Icon name="LogOut" size={20} /></button>
                         </div>
@@ -639,15 +709,8 @@
                         )}
                     </main>
 
-                    <SettingsModal 
-                        isOpen={isSettingsOpen} 
-                        onClose={() => setIsSettingsOpen(false)} 
-                        currentThemeId={themeId}
-                        onThemeChange={setThemeId}
-                        hidePast={hidePast}
-                        onToggleHidePast={() => setHidePast(!hidePast)}
-                        onResetData={handleResetData}
-                    />
+                    <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} currentThemeId={themeId} onThemeChange={setThemeId} hidePast={hidePast} onToggleHidePast={() => setHidePast(!hidePast)} onResetData={handleResetData} />
+                    <ExpenseModal isOpen={isExpenseOpen} onClose={() => setIsExpenseOpen(false)} data={savedData.transport} />
                 </div>
             );
         };
