@@ -49,37 +49,76 @@
         .sticker-btn { border: 3px solid white; box-shadow: 2px 3px 0px rgba(0,0,0,0.1); transition: all 0.2s; }
         .sticker-btn:active { transform: translateY(2px); box-shadow: none; }
         
-        #safe-reset-btn { position: fixed; top: 10px; right: 10px; z-index: 999999; background-color: #EF4444; color: white; border: 2px solid white; padding: 8px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; opacity: 0.8; transition: opacity 0.3s; display: none; } /* Hidden by default */
+        /* Emergency Reset Button - Moved to Bottom Right */
+        #safe-reset-btn { 
+            position: fixed; 
+            bottom: 40px; /* Avoid Dynamic Island and bottom bar */
+            right: 20px; 
+            z-index: 999999; 
+            background-color: #EF4444; 
+            color: white; 
+            border: 2px solid white; 
+            padding: 10px 16px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 12px; 
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); 
+            cursor: pointer; 
+            opacity: 0; /* Hidden by default */
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.2s;
+        }
+        #safe-reset-btn.visible {
+            opacity: 0.9;
+            pointer-events: auto;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
-    <button id="safe-reset-btn" onclick="if(confirm('如果畫面卡住或全白，按這個可以重置資料修復。確定要重置嗎？')){localStorage.clear();window.location.reload();}">🚑 救命按鈕</button>
+    
+    <button id="safe-reset-btn" onclick="if(confirm('如果畫面卡住或全白，按這個可以重置資料修復。確定要重置嗎？')){localStorage.clear();window.location.reload();}">
+        🚑 點我修復白畫面
+    </button>
 
-    <div id="root">
-        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
-            <div style="font-size: 60px; animation: bounce 1s infinite;">🏐</div>
-            <div style="color: #EC4899; font-family: sans-serif; margin-top: 16px; font-weight: bold; font-size: 16px; letter-spacing: 2px;">LOADING...</div>
-            <style>@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }</style>
-        </div>
+    <div id="loading-ui" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FFF0F5; z-index: 9999;">
+        <div style="font-size: 60px; animation: bounce 1s infinite;">🏐</div>
+        <div style="color: #EC4899; font-family: sans-serif; margin-top: 16px; font-weight: bold; font-size: 16px; letter-spacing: 2px;">LOADING...</div>
+        <style>@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }</style>
     </div>
 
+    <div id="root"></div>
+
     <script>
-        // Show rescue button only if loading takes too long
+        // Only show reset button if loading takes more than 2 seconds (likely stuck)
         setTimeout(function(){
             var btn = document.getElementById('safe-reset-btn');
-            if(btn) btn.style.display = 'block';
-        }, 3000);
+            var loader = document.getElementById('loading-ui');
+            // If loader is still there, it means React hasn't hydrated -> Stuck
+            if(btn && loader && loader.style.display !== 'none') {
+                btn.classList.add('visible');
+            }
+        }, 2000);
         
-        window.onerror = function(message, source, lineno, colno, error) {
-            if(!message.includes("ResizeObserver")) {
-               console.error("Error: " + message);
-               document.getElementById('safe-reset-btn').style.display = 'block';
+        window.onerror = function(message) {
+            // If error occurs, show the button immediately
+            var btn = document.getElementById('safe-reset-btn');
+            if(btn && !message.includes("ResizeObserver")) {
+               btn.classList.add('visible');
+               console.error("App Error: " + message);
             }
         };
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo, useCallback } = React;
+        // Hide Loading UI when React starts
+        const hideLoader = () => {
+            const loader = document.getElementById('loading-ui');
+            if(loader) loader.style.display = 'none';
+        };
+
+        const { useState, useEffect, useMemo } = React;
 
         const THEMES = [
             { id: 'pink', name: '甜心粉', color: '#EC4899', light: '#FBCFE8', bg: '#FFF0F5' },
@@ -122,7 +161,6 @@
         );
 
         // --- FARE MATRIX (2025 Standard Prices) ---
-        // Indices: Nangang, Taipei, Banqiao, Taoyuan, Hsinchu, Miaoli, Taichung, Changhua, Yunlin, Chiayi, Tainan, Zuoying
         const STATIONS = ["南港", "台北", "板橋", "桃園", "新竹", "苗栗", "台中", "彰化", "雲林", "嘉義", "台南", "左營"];
         const FARE_DATA = {
             "reserved": [
@@ -243,7 +281,7 @@
         );
 
         const HSRTicket = ({ transport, onUpdate }) => {
-            const { type, from, to, paymentStatus, customText, departTime, arriveTime, price, seatType } = transport || {};
+            const { type, trainNo, from, to, paymentStatus, customText, departTime, arriveTime, price, seatType } = transport || {};
             
             const updateField = (field, value) => {
                 const newData = { ...transport, [field]: value };
@@ -591,13 +629,17 @@
                     const local = safeGet('powerme_data');
                     if (!local) return DEFAULT_DATA;
                     const parsed = JSON.parse(local);
-                    // MERGE to ensure all new keys exist
+                    // Force Merge to prevent crash on missing keys
                     return { ...DEFAULT_DATA, ...parsed };
                 } catch(e) {
-                    console.error("Data corrupted, resetting to default");
                     return DEFAULT_DATA;
                 }
             });
+
+            // Effect to hide loader when React is ready
+            useEffect(() => {
+                hideLoader();
+            }, []);
 
             useEffect(() => {
                 const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
@@ -615,7 +657,6 @@
 
             const handleSaveData = (category, id, value) => { 
                 setSavedData(prev => {
-                    // Safety check for category existence
                     const catData = prev[category] || {};
                     return { ...prev, [category]: { ...catData, [id]: value } };
                 }); 
